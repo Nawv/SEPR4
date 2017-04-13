@@ -45,7 +45,7 @@ public class MapScreen extends AbstractScreen {
     /**
      * This stores the room arrow that is drawn when the player stands on a room changing mat
      */
-    private RoomArrow arrow = new RoomArrow(game.player);
+    private RoomArrow arrow = new RoomArrow(game);
     /**
      * This is the sprite batch that is relative to the screens origin
      */
