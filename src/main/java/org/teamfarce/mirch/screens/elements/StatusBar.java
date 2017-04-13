@@ -127,7 +127,8 @@ public class StatusBar {
     public void render() {
         scoreLabel.setText("Score: " + game.gameSnapshot.getScore());
         personalityMeter.setText(getPersonalityMeterValue());
-        timeLabel.setText("Time Remaining: " + (30 - (int)((MapScreen)(game.guiController.mapScreen)).getPlayTime()));
+        timeLabel.setText("Time Remaining: " + ((int)((MapScreen)(game.guiController.mapScreen)).PLAY_TIME
+        		- (int)((MapScreen)(game.guiController.mapScreen)).getPlayTime()));
         stage.act();
 
         stage.draw();

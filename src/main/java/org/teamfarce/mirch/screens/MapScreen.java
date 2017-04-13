@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class MapScreen extends AbstractScreen {
 	
-	private final float PLAY_TIME = 30.0f;
+	public final float PLAY_TIME = 10.0f;
 
     /**
      * This stores the most recent frame as an image
@@ -76,6 +76,7 @@ public class MapScreen extends AbstractScreen {
     private StatusBar statusBar;
     
     private float playTime = 0.0f;
+    private boolean gameTransition = false;
 
     public MapScreen(MIRCH game, Skin uiSkin) {
         super(game);
@@ -115,8 +116,8 @@ public class MapScreen extends AbstractScreen {
         
         playTime += delta;
         if (playTime > PLAY_TIME) {
-            switchGame();
-            playTime = 0.0f;
+            gameTransition = true;
+            playTime = PLAY_TIME;
         }
         
         playerController.update(delta);
@@ -141,11 +142,12 @@ public class MapScreen extends AbstractScreen {
         tileRender.getBatch().end();
 
         updateTransition(delta);
+        updateGameTransition(delta);
 
         //Everything to be drawn relative to bottom left of the screen
         spriteBatch.begin();
 
-        if (roomTransition) {
+        if (roomTransition || gameTransition) {
             BLACK_BACKGROUND.draw(spriteBatch);
         }
 
@@ -182,7 +184,7 @@ public class MapScreen extends AbstractScreen {
      * This method returns true if the game is currently transitioning between rooms
      */
     public boolean isTransitioning() {
-        return roomTransition;
+        return roomTransition || gameTransition;
     }
 
     /**
@@ -220,6 +222,37 @@ public class MapScreen extends AbstractScreen {
             initialiseRoomTransition();
             game.player.roomChange = false;
         }
+    }
+    
+    public void updateGameTransition(float delta) {
+    	if (gameTransition) {
+            BLACK_BACKGROUND.setAlpha(Interpolation.pow4.apply(0, 1, animTimer / ANIM_TIME));
+
+            if (fadeToBlack) {
+                animTimer += delta;
+
+                if (animTimer >= ANIM_TIME) {
+                	switchGame();
+                }
+
+                if (animTimer > ANIM_TIME) {
+                    fadeToBlack = false;
+                }
+            } else {
+                animTimer -= delta;
+
+                if (animTimer <= 0f) {
+                    finishGameTransition();
+                }
+            }
+    	}
+    }
+    
+    public void finishGameTransition() {
+        animTimer = 0;
+        gameTransition = false;
+        fadeToBlack = true;
+        playTime = 0.0f;
     }
     
     public void switchGame() {
