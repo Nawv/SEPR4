@@ -79,4 +79,7 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.5"
     compile "com.badlogicgames.gdx:gdx-platform:1.9.5:natives-desktop"
     compile "org.xerial:sqlite-jdbc:3.16.1"
+    
+    compile "com.badlogicgames.gdx:gdx-freetype:1.9.5"
+    compile "com.badlogicgames.gdx:gdx-freetype-platform:1.9.5:natives-desktop"
 }

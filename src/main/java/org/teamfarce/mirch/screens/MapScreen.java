@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import org.teamfarce.mirch.Assets;
 import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.OrthogonalTiledMapRendererWithPeople;
 import org.teamfarce.mirch.entities.AbstractPerson;
@@ -29,7 +31,7 @@ import java.util.List;
  */
 public class MapScreen extends AbstractScreen {
 	
-	public final float PLAY_TIME = 10.0f;
+	public final float PLAY_TIME = 5.0f;
 
     /**
      * This stores the most recent frame as an image
@@ -148,13 +150,25 @@ public class MapScreen extends AbstractScreen {
         tileRender.getBatch().end();
 
         updateTransition(delta);
-        updateGameTransition(delta);
 
         //Everything to be drawn relative to bottom left of the screen
         spriteBatch.begin();
 
         if (roomTransition || gameTransition) {
             BLACK_BACKGROUND.draw(spriteBatch);
+        }
+        
+        if (gameTransitionPause) {
+        	if (game.game1) {
+        		Assets.LAYOUT.setText(Assets.FONT30, "Player 1");
+        	} else {
+        		Assets.LAYOUT.setText(Assets.FONT30, "Player 2");
+        	}
+        	Assets.FONT30.draw(spriteBatch, Assets.LAYOUT, (Gdx.graphics.getWidth() - Assets.LAYOUT.width)/2,
+        			500);
+        	Assets.LAYOUT.setText(Assets.FONT30, "Press Any Key to Continue");
+        	Assets.FONT30.draw(spriteBatch, Assets.LAYOUT, (Gdx.graphics.getWidth() - Assets.LAYOUT.width)/2,
+        			400);
         }
 
         spriteBatch.end();
@@ -180,10 +194,12 @@ public class MapScreen extends AbstractScreen {
      * This is called when the room transition animation has completed so the necessary variables
      * can be returned to their normal values
      */
-    public void finishRoomTransition() {
+    public void finishTransition() {
         animTimer = 0;
         roomTransition = false;
+        gameTransition = false;
         fadeToBlack = true;
+        playTime = 0.0f;
     }
 
     /**
@@ -197,29 +213,31 @@ public class MapScreen extends AbstractScreen {
      * This method is called once a render loop to update the room transition animation
      */
     private void updateTransition(float delta) {
-        if (roomTransition) {
+        if (roomTransition || gameTransition && !gameTransitionPause) {
             BLACK_BACKGROUND.setAlpha(Interpolation.pow4.apply(0, 1, animTimer / ANIM_TIME));
 
             if (fadeToBlack) {
                 animTimer += delta;
 
                 if (animTimer >= ANIM_TIME) {
-                    game.player.moveRoom();
-                    currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
-                    getTileRenderer().setMap(game.player.getRoom().getTiledMap());
-                    getTileRenderer().clearPeople();
-                    getTileRenderer().addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
-                    getTileRenderer().addPerson(game.player);
-                }
-
-                if (animTimer > ANIM_TIME) {
+                	if (roomTransition) {
+	                    game.player.moveRoom();
+	                    currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
+	                    getTileRenderer().setMap(game.player.getRoom().getTiledMap());
+	                    getTileRenderer().clearPeople();
+	                    getTileRenderer().addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
+	                    getTileRenderer().addPerson(game.player);
+                	} else {
+                    	switchGame();
+                        gameTransitionPause = true;
+                	}
                     fadeToBlack = false;
                 }
             } else {
                 animTimer -= delta;
 
                 if (animTimer <= 0f) {
-                    finishRoomTransition();
+                    finishTransition();
                 }
             }
         }
@@ -228,35 +246,6 @@ public class MapScreen extends AbstractScreen {
             initialiseRoomTransition();
             game.player.roomChange = false;
         }
-    }
-    
-    public void updateGameTransition(float delta) {
-    	if (gameTransition && !gameTransitionPause) {
-            BLACK_BACKGROUND.setAlpha(Interpolation.pow4.apply(0, 1, animTimer / ANIM_TIME));
-
-            if (fadeToBlack) {
-                animTimer += delta;
-
-                if (animTimer >= ANIM_TIME) {
-                	switchGame();
-                    fadeToBlack = false;
-                    gameTransitionPause = true;
-                }
-            } else {
-                animTimer -= delta;
-
-                if (animTimer <= 0f) {
-                    finishGameTransition();
-                }
-            }
-    	}
-    }
-    
-    public void finishGameTransition() {
-        animTimer = 0;
-        gameTransition = false;
-        fadeToBlack = true;
-        playTime = 0.0f;
     }
     
     public void switchGame() {
