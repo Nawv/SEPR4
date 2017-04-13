@@ -4,6 +4,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.Settings;
 import org.teamfarce.mirch.Vector2Int;
@@ -27,6 +31,8 @@ public class PlayerController extends InputAdapter {
      * Booleans storing what keys have been pressed and not released
      */
     private boolean north, south, west, east;
+    
+    private List<Integer> keysPressed = new ArrayList<>();
 
     /**
      * This stores the game that is running
@@ -51,6 +57,8 @@ public class PlayerController extends InputAdapter {
      */
     @Override
     public boolean keyDown(int keycode) {
+    	keysPressed.add(keycode);
+    	
         if (keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE) {
             return true;
         }
@@ -87,6 +95,7 @@ public class PlayerController extends InputAdapter {
      */
     @Override
     public boolean keyUp(int keycode) {
+    	keysPressed.remove(new Integer(keycode));
 
         if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
             this.west = false;
@@ -166,5 +175,9 @@ public class PlayerController extends InputAdapter {
         if (game.player.getState() != AbstractPerson.PersonState.WALKING) {
         	game.player.direction = goTo;
         }
+    }
+    
+    public boolean anyKeyPressed() {
+    	return !keysPressed.isEmpty();
     }
 }

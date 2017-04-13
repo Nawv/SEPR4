@@ -77,6 +77,7 @@ public class MapScreen extends AbstractScreen {
     
     private float playTime = 0.0f;
     private boolean gameTransition = false;
+    private boolean gameTransitionPause = false;
 
     public MapScreen(MIRCH game, Skin uiSkin) {
         super(game);
@@ -112,12 +113,17 @@ public class MapScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        game.gameSnapshot.updateScore(delta);
+    	if (!gameTransition)
+    		game.gameSnapshot.updateScore(delta);
         
         playTime += delta;
         if (playTime > PLAY_TIME) {
             gameTransition = true;
             playTime = PLAY_TIME;
+        }
+        
+        if (playerController.anyKeyPressed()) {
+        	gameTransitionPause = false;
         }
         
         playerController.update(delta);
@@ -225,7 +231,7 @@ public class MapScreen extends AbstractScreen {
     }
     
     public void updateGameTransition(float delta) {
-    	if (gameTransition) {
+    	if (gameTransition && !gameTransitionPause) {
             BLACK_BACKGROUND.setAlpha(Interpolation.pow4.apply(0, 1, animTimer / ANIM_TIME));
 
             if (fadeToBlack) {
@@ -233,10 +239,8 @@ public class MapScreen extends AbstractScreen {
 
                 if (animTimer >= ANIM_TIME) {
                 	switchGame();
-                }
-
-                if (animTimer > ANIM_TIME) {
                     fadeToBlack = false;
+                    gameTransitionPause = true;
                 }
             } else {
                 animTimer -= delta;
