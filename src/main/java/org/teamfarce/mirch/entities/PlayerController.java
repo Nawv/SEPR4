@@ -58,7 +58,20 @@ public class PlayerController extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE) {
-            //player.interact();
+            game.game1 = !game.game1;
+            if (game.game1) {
+            	game.gameSnapshot = game.game1Snapshot;
+            	game.rooms = game.game1Rooms;
+            	game.characters = game.game1Characters;
+            	game.player = game.player1;
+            } else {
+            	game.gameSnapshot = game.game2Snapshot;
+            	game.rooms = game.game2Rooms;
+            	game.characters = game.game2Characters;
+            	game.player = game.player2;
+            }
+            player = game.player;
+            ((MapScreen)(game.guiController.mapScreen)).switchGame();
             return true;
         }
 

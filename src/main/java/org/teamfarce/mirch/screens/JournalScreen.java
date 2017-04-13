@@ -66,7 +66,7 @@ public class JournalScreen extends AbstractScreen {
         this.gameSnapshot = game.gameSnapshot;
         this.uiSkin = uiSkin;
 
-        statusBar = new StatusBar(game.gameSnapshot, uiSkin);
+        statusBar = new StatusBar(game, uiSkin);
 
         //Initialise notepad page here to preserve page contents across screen transitions
         notepadPage = initJournalNotepadPage();

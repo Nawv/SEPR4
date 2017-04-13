@@ -1,6 +1,5 @@
 package org.teamfarce.mirch.screens.elements;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import org.teamfarce.mirch.GameSnapshot;
 import org.teamfarce.mirch.GameState;
+import org.teamfarce.mirch.MIRCH;
 
 
 /**
@@ -43,14 +42,14 @@ public class StatusBar {
     /**
      * Game snapshot instance
      */
-    private GameSnapshot gameSnapshot;
+    private MIRCH game;
 
     /**
      * The initializer for the StatusBar
      * Sets up UI controls and adds them to the stage ready for rendering
      */
-    public StatusBar(GameSnapshot snapshot, Skin uiSkin) {
-        gameSnapshot = snapshot;
+    public StatusBar(MIRCH game, Skin uiSkin) {
+        this.game = game;
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
@@ -61,7 +60,7 @@ public class StatusBar {
         statusBar.defaults().width(WIDTH);
 
 
-        scoreLabel = new TextButton("Score: " + gameSnapshot.getScore(), uiSkin);
+        scoreLabel = new TextButton("Score: " + game.gameSnapshot.getScore(), uiSkin);
         statusBar.add(scoreLabel).uniform();
 
         TextButton mapButton = new TextButton("Map", uiSkin);
@@ -78,7 +77,7 @@ public class StatusBar {
         mapButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("map button was pressed");
-                gameSnapshot.setState(GameState.map);
+                game.gameSnapshot.setState(GameState.map);
             }
         });
 
@@ -86,7 +85,7 @@ public class StatusBar {
         journalButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Journal button was pressed");
-                gameSnapshot.setState(GameState.journalClues);
+                game.gameSnapshot.setState(GameState.journalClues);
             }
         });
 
@@ -99,7 +98,7 @@ public class StatusBar {
      * @return String - Representing their personality
      */
     private String getPersonalityMeterValue() {
-        int personalityScore = gameSnapshot.getPersonality();
+        int personalityScore = game.gameSnapshot.getPersonality();
         String result = "";
 
         if (personalityScore > 5) {
@@ -121,7 +120,7 @@ public class StatusBar {
      * Usage: call within the render() method in a screen
      */
     public void render() {
-        scoreLabel.setText("Score: " + gameSnapshot.getScore());
+        scoreLabel.setText("Score: " + game.gameSnapshot.getScore());
         personalityMeter.setText(getPersonalityMeterValue());
         stage.act();
 

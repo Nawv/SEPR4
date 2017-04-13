@@ -94,7 +94,7 @@ public class MapScreen extends AbstractScreen {
 
         BLACK_BACKGROUND = new Sprite(new Texture(pixMap));
 
-        this.statusBar = new StatusBar(game.gameSnapshot, uiSkin);
+        this.statusBar = new StatusBar(game, uiSkin);
     }
 
     @Override
@@ -209,6 +209,14 @@ public class MapScreen extends AbstractScreen {
             initialiseRoomTransition();
             game.player.roomChange = false;
         }
+    }
+    
+    public void switchGame() {
+        currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
+        getTileRenderer().setMap(game.player.getRoom().getTiledMap());
+        getTileRenderer().clearPeople();
+        getTileRenderer().addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
+        getTileRenderer().addPerson(game.player);
     }
 
     /**

@@ -60,7 +60,7 @@ public class FindClueScreen extends AbstractScreen {
         this.snapshot = game.gameSnapshot;
         this.uiSkin = uiSkin;
 
-        statusBar = new StatusBar(game.gameSnapshot, uiSkin);
+        statusBar = new StatusBar(game, uiSkin);
     }
 
     /**
