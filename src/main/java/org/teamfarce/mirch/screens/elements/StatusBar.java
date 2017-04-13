@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.teamfarce.mirch.GameState;
 import org.teamfarce.mirch.MIRCH;
+import org.teamfarce.mirch.screens.MapScreen;
 
 
 /**
@@ -38,6 +39,7 @@ public class StatusBar {
 
     private TextButton scoreLabel;
     private TextButton personalityMeter;
+    private TextButton timeLabel;
 
     /**
      * Game snapshot instance
@@ -71,6 +73,9 @@ public class StatusBar {
 
         personalityMeter = new TextButton(getPersonalityMeterValue(), uiSkin);
         statusBar.add(personalityMeter).uniform();
+        
+        timeLabel = new TextButton("Time Remaining: 30", uiSkin);
+        statusBar.add(timeLabel).uniform();
 
         /* Event handlers */
         //add a listener for the show interview log button
@@ -122,6 +127,7 @@ public class StatusBar {
     public void render() {
         scoreLabel.setText("Score: " + game.gameSnapshot.getScore());
         personalityMeter.setText(getPersonalityMeterValue());
+        timeLabel.setText("Time Remaining: " + (30 - (int)((MapScreen)(game.guiController.mapScreen)).getPlayTime()));
         stage.act();
 
         stage.draw();

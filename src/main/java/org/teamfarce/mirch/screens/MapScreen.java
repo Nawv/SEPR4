@@ -28,6 +28,8 @@ import java.util.List;
  * Created by brookehatton on 31/01/2017.
  */
 public class MapScreen extends AbstractScreen {
+	
+	private final float PLAY_TIME = 30.0f;
 
     /**
      * This stores the most recent frame as an image
@@ -72,6 +74,8 @@ public class MapScreen extends AbstractScreen {
      */
     private boolean fadeToBlack = true;
     private StatusBar statusBar;
+    
+    private float playTime = 0.0f;
 
     public MapScreen(MIRCH game, Skin uiSkin) {
         super(game);
@@ -84,7 +88,7 @@ public class MapScreen extends AbstractScreen {
         this.tileRender.addPerson(game.player);
         currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
         tileRender.addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
-        this.playerController = new PlayerController(game.player, game, camera);
+        this.playerController = new PlayerController(game, camera);
         this.spriteBatch = new SpriteBatch();
 
         Pixmap pixMap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
@@ -108,6 +112,13 @@ public class MapScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         game.gameSnapshot.updateScore(delta);
+        
+        playTime += delta;
+        if (playTime > PLAY_TIME) {
+            switchGame();
+            playTime = 0.0f;
+        }
+        
         playerController.update(delta);
         game.player.update(delta);
 
@@ -212,6 +223,19 @@ public class MapScreen extends AbstractScreen {
     }
     
     public void switchGame() {
+        game.game1 = !game.game1;
+        if (game.game1) {
+        	game.gameSnapshot = game.game1Snapshot;
+        	game.rooms = game.game1Rooms;
+        	game.characters = game.game1Characters;
+        	game.player = game.player1;
+        } else {
+        	game.gameSnapshot = game.game2Snapshot;
+        	game.rooms = game.game2Rooms;
+        	game.characters = game.game2Characters;
+        	game.player = game.player2;
+        }
+        
         currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
         getTileRenderer().setMap(game.player.getRoom().getTiledMap());
         getTileRenderer().clearPeople();
@@ -226,6 +250,10 @@ public class MapScreen extends AbstractScreen {
      */
     public List<Suspect> getNPCs() {
         return currentNPCs;
+    }
+    
+    public float getPlayTime() {
+    	return playTime;
     }
 
     @Override

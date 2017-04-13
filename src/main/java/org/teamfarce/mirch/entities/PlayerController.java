@@ -29,11 +29,6 @@ public class PlayerController extends InputAdapter {
     private boolean north, south, west, east;
 
     /**
-     * This stores the player that the controller controls
-     */
-    private Player player;
-
-    /**
      * This stores the game that is running
      */
     private MIRCH game;
@@ -43,8 +38,7 @@ public class PlayerController extends InputAdapter {
      *
      * @param player - The player that we want this controller to control
      */
-    public PlayerController(Player player, MIRCH game, OrthographicCamera camera) {
-        this.player = player;
+    public PlayerController(MIRCH game, OrthographicCamera camera) {
         this.camera = camera;
         this.game = game;
     }
@@ -58,20 +52,6 @@ public class PlayerController extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE) {
-            game.game1 = !game.game1;
-            if (game.game1) {
-            	game.gameSnapshot = game.game1Snapshot;
-            	game.rooms = game.game1Rooms;
-            	game.characters = game.game1Characters;
-            	game.player = game.player1;
-            } else {
-            	game.gameSnapshot = game.game2Snapshot;
-            	game.rooms = game.game2Rooms;
-            	game.characters = game.game2Characters;
-            	game.player = game.player2;
-            }
-            player = game.player;
-            ((MapScreen)(game.guiController.mapScreen)).switchGame();
             return true;
         }
 
@@ -135,7 +115,7 @@ public class PlayerController extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // ignore if its not left mouse button or first touch pointer
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
-        player.interact(screenPosToTile(screenX, screenY));
+        game.player.interact(screenPosToTile(screenX, screenY));
         return true;
     }
 
@@ -177,13 +157,14 @@ public class PlayerController extends InputAdapter {
 
         timer += delta;
 
-        if (timer > movementTime && !((MapScreen) game.guiController.mapScreen).isTransitioning() && player.toMoveTo.isEmpty()) {
-            player.move(goTo);
+        if (timer > movementTime && !((MapScreen) game.guiController.mapScreen).isTransitioning() && 
+        		game.player.toMoveTo.isEmpty()) {
+        	game.player.move(goTo);
             return;
         }
 
-        if (player.getState() != AbstractPerson.PersonState.WALKING) {
-            player.direction = goTo;
+        if (game.player.getState() != AbstractPerson.PersonState.WALKING) {
+        	game.player.direction = goTo;
         }
     }
 }
