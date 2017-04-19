@@ -63,7 +63,7 @@ public class MIRCH extends Game {
 
         ScenarioBuilderDatabase database;
         try {
-            database = new ScenarioBuilderDatabase("assets/db.db");
+            database = new ScenarioBuilderDatabase("db.db");
 
             try {
                 game1Snapshot = ScenarioBuilder.generateGame(this, database, new Random());
