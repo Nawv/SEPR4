@@ -180,4 +180,8 @@ public class PlayerController extends InputAdapter {
     public boolean anyKeyPressed() {
     	return !keysPressed.isEmpty();
     }
+    
+    public void clearKeysPressed() {
+    	keysPressed.clear();
+    }
 }

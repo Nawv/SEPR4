@@ -249,6 +249,7 @@ public class MapScreen extends AbstractScreen {
     }
     
     public void switchGame() {
+    	playerController.clearKeysPressed();
         game.game1 = !game.game1;
         if (game.game1) {
         	game.gameSnapshot = game.game1Snapshot;
