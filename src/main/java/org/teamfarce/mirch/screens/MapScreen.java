@@ -31,7 +31,10 @@ import java.util.List;
  */
 public class MapScreen extends AbstractScreen {
 	
-	public final float PLAY_TIME = 5.0f;
+	/**
+	 * Amount of time each turn lasts, in seconds
+	 */
+	public final float PLAY_TIME = 30.0f;
 
     /**
      * This stores the most recent frame as an image
@@ -77,8 +80,17 @@ public class MapScreen extends AbstractScreen {
     private boolean fadeToBlack = true;
     private StatusBar statusBar;
     
+    /**
+     * Amount of time elapsed in current turn
+     */
     private float playTime = 0.0f;
+    /**
+     * Whether the game is switching turns
+     */
     private boolean gameTransition = false;
+    /**
+     * Whether the game is waiting for player input to switch turns
+     */
     private boolean gameTransitionPause = false;
 
     public MapScreen(MIRCH game, Skin uiSkin) {
@@ -203,14 +215,16 @@ public class MapScreen extends AbstractScreen {
     }
 
     /**
-     * This method returns true if the game is currently transitioning between rooms
+     * @return true if the game is currently transitioning between rooms or turns, false otherwise
      */
     public boolean isTransitioning() {
         return roomTransition || gameTransition;
     }
 
     /**
-     * This method is called once a render loop to update the room transition animation
+     * Called once a render loop to update the room or turn transition animation
+     * 
+     * @param delta elapsed time since last frame, in seconds
      */
     private void updateTransition(float delta) {
         if (roomTransition || gameTransition && !gameTransitionPause) {
@@ -248,6 +262,9 @@ public class MapScreen extends AbstractScreen {
         }
     }
     
+    /**
+     * Switches all game variables to the other turn
+     */
     public void switchGame() {
     	playerController.clearKeysPressed();
         game.game1 = !game.game1;
