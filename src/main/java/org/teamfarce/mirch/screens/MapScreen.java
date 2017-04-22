@@ -208,10 +208,10 @@ public class MapScreen extends AbstractScreen {
      */
     public void finishTransition() {
         animTimer = 0;
+        if (gameTransition) playTime = 0.0f;
         roomTransition = false;
         gameTransition = false;
         fadeToBlack = true;
-        playTime = 0.0f;
     }
 
     /**
