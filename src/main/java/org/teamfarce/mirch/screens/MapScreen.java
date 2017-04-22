@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import org.teamfarce.mirch.Assets;
 import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.OrthogonalTiledMapRendererWithPeople;
 import org.teamfarce.mirch.entities.AbstractPerson;
@@ -28,6 +30,11 @@ import java.util.List;
  * Created by brookehatton on 31/01/2017.
  */
 public class MapScreen extends AbstractScreen {
+	
+	/**
+	 * Amount of time each turn lasts, in seconds
+	 */
+	public final float PLAY_TIME = 30.0f;
 
     /**
      * This stores the most recent frame as an image
@@ -45,7 +52,7 @@ public class MapScreen extends AbstractScreen {
     /**
      * This stores the room arrow that is drawn when the player stands on a room changing mat
      */
-    private RoomArrow arrow = new RoomArrow(game.player);
+    private RoomArrow arrow = new RoomArrow(game);
     /**
      * This is the sprite batch that is relative to the screens origin
      */
@@ -72,6 +79,19 @@ public class MapScreen extends AbstractScreen {
      */
     private boolean fadeToBlack = true;
     private StatusBar statusBar;
+    
+    /**
+     * Amount of time elapsed in current turn
+     */
+    private float playTime = 0.0f;
+    /**
+     * Whether the game is switching turns
+     */
+    private boolean gameTransition = false;
+    /**
+     * Whether the game is waiting for player input to switch turns
+     */
+    private boolean gameTransitionPause = false;
 
     public MapScreen(MIRCH game, Skin uiSkin) {
         super(game);
@@ -84,7 +104,7 @@ public class MapScreen extends AbstractScreen {
         this.tileRender.addPerson(game.player);
         currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
         tileRender.addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
-        this.playerController = new PlayerController(game.player, game, camera);
+        this.playerController = new PlayerController(game, camera);
         this.spriteBatch = new SpriteBatch();
 
         Pixmap pixMap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
@@ -94,7 +114,7 @@ public class MapScreen extends AbstractScreen {
 
         BLACK_BACKGROUND = new Sprite(new Texture(pixMap));
 
-        this.statusBar = new StatusBar(game.gameSnapshot, uiSkin);
+        this.statusBar = new StatusBar(game, uiSkin);
     }
 
     @Override
@@ -107,7 +127,19 @@ public class MapScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        game.gameSnapshot.updateScore(delta);
+    	if (!gameTransition)
+    		game.gameSnapshot.updateScore(delta);
+        
+        playTime += delta;
+        if (playTime > PLAY_TIME) {
+            gameTransition = true;
+            playTime = PLAY_TIME;
+        }
+        
+        if (playerController.anyKeyPressed()) {
+        	gameTransitionPause = false;
+        }
+        
         playerController.update(delta);
         game.player.update(delta);
 
@@ -134,8 +166,21 @@ public class MapScreen extends AbstractScreen {
         //Everything to be drawn relative to bottom left of the screen
         spriteBatch.begin();
 
-        if (roomTransition) {
+        if (roomTransition || gameTransition) {
             BLACK_BACKGROUND.draw(spriteBatch);
+        }
+        
+        if (gameTransitionPause) {
+        	if (game.game1) {
+        		Assets.LAYOUT.setText(Assets.FONT30, "Player 1");
+        	} else {
+        		Assets.LAYOUT.setText(Assets.FONT30, "Player 2");
+        	}
+        	Assets.FONT30.draw(spriteBatch, Assets.LAYOUT, (Gdx.graphics.getWidth() - Assets.LAYOUT.width)/2,
+        			500);
+        	Assets.LAYOUT.setText(Assets.FONT30, "Press Any Key to Continue");
+        	Assets.FONT30.draw(spriteBatch, Assets.LAYOUT, (Gdx.graphics.getWidth() - Assets.LAYOUT.width)/2,
+        			400);
         }
 
         spriteBatch.end();
@@ -161,46 +206,52 @@ public class MapScreen extends AbstractScreen {
      * This is called when the room transition animation has completed so the necessary variables
      * can be returned to their normal values
      */
-    public void finishRoomTransition() {
+    public void finishTransition() {
         animTimer = 0;
+        if (gameTransition) playTime = 0.0f;
         roomTransition = false;
+        gameTransition = false;
         fadeToBlack = true;
     }
 
     /**
-     * This method returns true if the game is currently transitioning between rooms
+     * @return true if the game is currently transitioning between rooms or turns, false otherwise
      */
     public boolean isTransitioning() {
-        return roomTransition;
+        return roomTransition || gameTransition;
     }
 
     /**
-     * This method is called once a render loop to update the room transition animation
+     * Called once a render loop to update the room or turn transition animation
+     * 
+     * @param delta elapsed time since last frame, in seconds
      */
     private void updateTransition(float delta) {
-        if (roomTransition) {
+        if (roomTransition || gameTransition && !gameTransitionPause) {
             BLACK_BACKGROUND.setAlpha(Interpolation.pow4.apply(0, 1, animTimer / ANIM_TIME));
 
             if (fadeToBlack) {
                 animTimer += delta;
 
                 if (animTimer >= ANIM_TIME) {
-                    game.player.moveRoom();
-                    currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
-                    getTileRenderer().setMap(game.player.getRoom().getTiledMap());
-                    getTileRenderer().clearPeople();
-                    getTileRenderer().addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
-                    getTileRenderer().addPerson(game.player);
-                }
-
-                if (animTimer > ANIM_TIME) {
+                	if (roomTransition) {
+	                    game.player.moveRoom();
+	                    currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
+	                    getTileRenderer().setMap(game.player.getRoom().getTiledMap());
+	                    getTileRenderer().clearPeople();
+	                    getTileRenderer().addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
+	                    getTileRenderer().addPerson(game.player);
+                	} else {
+                    	switchGame();
+                        gameTransitionPause = true;
+                	}
                     fadeToBlack = false;
                 }
             } else {
                 animTimer -= delta;
 
                 if (animTimer <= 0f) {
-                    finishRoomTransition();
+                    finishTransition();
                 }
             }
         }
@@ -210,6 +261,31 @@ public class MapScreen extends AbstractScreen {
             game.player.roomChange = false;
         }
     }
+    
+    /**
+     * Switches all game variables to the other turn
+     */
+    public void switchGame() {
+    	playerController.clearKeysPressed();
+        game.game1 = !game.game1;
+        if (game.game1) {
+        	game.gameSnapshot = game.game1Snapshot;
+        	game.rooms = game.game1Rooms;
+        	game.characters = game.game1Characters;
+        	game.player = game.player1;
+        } else {
+        	game.gameSnapshot = game.game2Snapshot;
+        	game.rooms = game.game2Rooms;
+        	game.characters = game.game2Characters;
+        	game.player = game.player2;
+        }
+        
+        currentNPCs = game.gameSnapshot.map.getNPCs(game.player.getRoom());
+        getTileRenderer().setMap(game.player.getRoom().getTiledMap());
+        getTileRenderer().clearPeople();
+        getTileRenderer().addPerson((List<AbstractPerson>) ((List<? extends AbstractPerson>) currentNPCs));
+        getTileRenderer().addPerson(game.player);
+    }
 
     /**
      * This method returns the NPCs on the current map
@@ -218,6 +294,10 @@ public class MapScreen extends AbstractScreen {
      */
     public List<Suspect> getNPCs() {
         return currentNPCs;
+    }
+    
+    public float getPlayTime() {
+    	return playTime;
     }
 
     @Override

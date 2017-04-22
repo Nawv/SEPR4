@@ -3,6 +3,7 @@ package org.teamfarce.mirch.screens.elements;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.teamfarce.mirch.Assets;
+import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.entities.AbstractPerson;
 import org.teamfarce.mirch.entities.Direction;
 import org.teamfarce.mirch.entities.Player;
@@ -14,7 +15,7 @@ public class RoomArrow extends Sprite {
     /**
      * The player that the arrow is associated with
      */
-    private Player player;
+    private MIRCH game;
 
     /**
      * Whether the arrow is to be shown or not
@@ -26,9 +27,9 @@ public class RoomArrow extends Sprite {
      *
      * @param player the player that the arrow is to be associated with
      */
-    public RoomArrow(Player player) {
+    public RoomArrow(MIRCH game) {
         super(Assets.getArrowDirection("NORTH"));
-        this.player = player;
+        this.game = game;
 
     }
 
@@ -50,7 +51,8 @@ public class RoomArrow extends Sprite {
      * otherwise it is hidden
      */
     public void update() {
-        if (this.player.isOnTriggerTile() && this.player.getState() == AbstractPerson.PersonState.STANDING) {
+    	Player player = game.player;
+        if (player.isOnTriggerTile() && player.getState() == AbstractPerson.PersonState.STANDING) {
 
             //this is the rotation of the mat (ie the way the arrow should face)
             String rotation = player.getRoom().getMatRotation(player.getTileX(), player.getTileY());

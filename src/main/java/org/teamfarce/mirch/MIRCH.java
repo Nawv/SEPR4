@@ -21,15 +21,34 @@ import java.util.Random;
  */
 public class MIRCH extends Game {
     public static MIRCH me;
+    
+    // Each game state
+    public GameSnapshot game1Snapshot;
+    public GameSnapshot game2Snapshot;
+    // Pointer to current game state
     public GameSnapshot gameSnapshot;
+    
     public GUIController guiController;
-
+    
+    // Each game's rooms
+    public ArrayList<Room> game1Rooms;
+    public ArrayList<Room> game2Rooms;
+    // Pointer to current game's rooms
     public ArrayList<Room> rooms;
+
+    // Each game's characters
+    public ArrayList<Suspect> game1Characters;
+    public ArrayList<Suspect> game2Characters;
+    // Pointer to current game's characters
     public ArrayList<Suspect> characters;
 
     public int step; //stores the current loop number
 
+    public Player player1, player2;
+    // Pointer to current player
     public Player player;
+    
+    public boolean game1 = true;
 
     /**
      * Initialises all variables in the game and sets up the game for play.
@@ -44,36 +63,42 @@ public class MIRCH extends Game {
 
         ScenarioBuilderDatabase database;
         try {
-            database = new ScenarioBuilderDatabase("assets/db.db");
+            database = new ScenarioBuilderDatabase("db.db");
 
             try {
-                gameSnapshot = ScenarioBuilder.generateGame(this, database, new Random());
+                game1Snapshot = ScenarioBuilder.generateGame(this, database, new Random());
+                game2Snapshot = ScenarioBuilder.generateGame(this, database, new Random());
             } catch (ScenarioBuilderException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
         } catch (SQLException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
         //generate RenderItems from each room
-        rooms = new ArrayList<>();
-        for (Room room : gameSnapshot.getRooms()) {
-            rooms.add(room); //create a new renderItem for the room
+        game1Rooms = new ArrayList<>();
+        for (Room room : game1Snapshot.getRooms()) {
+        	game1Rooms.add(room);
         }
-
-        //generate RenderItems for each prop
-
+        game2Rooms = new ArrayList<>();
+        for (Room room : game2Snapshot.getRooms()) {
+        	game2Rooms.add(room);
+        }
 
         //generate RenderItems for each suspect
-        characters = new ArrayList<>();
-        for (Suspect suspect : gameSnapshot.getSuspects()) {
-            characters.add(suspect);
+        game1Characters = new ArrayList<>();
+        for (Suspect suspect : game1Snapshot.getSuspects()) {
+        	game1Characters.add(suspect);
+        }
+        //generate RenderItems for each suspect
+        game2Characters = new ArrayList<>();
+        for (Suspect suspect : game2Snapshot.getSuspects()) {
+        	game2Characters.add(suspect);
         }
 
-        gameSnapshot.map.placeNPCsInRooms(characters);
+        game1Snapshot.map.placeNPCsInRooms(game1Characters);
+        game2Snapshot.map.placeNPCsInRooms(game2Characters);
 
         //initialise the player sprite
         Dialogue playerDialogue = null;
@@ -83,13 +108,25 @@ public class MIRCH extends Game {
             System.out.print(e.getMessage());
             System.exit(0);
         }
-        player = new Player(this, "Bob", "The player to beat all players", "Detective_sprite.png", playerDialogue);
-        player.setTileCoordinates(7, 10);
-        this.player.setRoom(rooms.get(0));
+        player1 = new Player(this, "Bob", "The player to beat all players", "Detective_sprite.png", playerDialogue);
+        player1.setTileCoordinates(7, 10);
+        player1.setRoom(game1Rooms.get(0));
+        
+        player2 = new Player(this, "Bob", "The player to beat all players", "Detective_sprite.png", playerDialogue);
+        player2.setTileCoordinates(7, 10);
+        player2.setRoom(game2Rooms.get(0));
+        
+        // Initialize pointers
+        gameSnapshot = game1Snapshot;
+        rooms = game1Rooms;
+        characters = game1Characters;
+        player = player1;
+        
+        game2Snapshot.setState(GameState.map);
 
         //Setup screens
-        this.guiController = new GUIController(this);
-        this.guiController.initScreens();
+        guiController = new GUIController(this);
+        guiController.initScreens();
     }
 
     /**

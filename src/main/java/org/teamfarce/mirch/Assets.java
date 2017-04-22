@@ -3,7 +3,11 @@ package org.teamfarce.mirch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 /**
  * This class manages all the assets.
@@ -21,6 +25,9 @@ public class Assets {
      * This it the animation for the clue glint to be drawn where a clue is hidden
      */
     public static Animation CLUE_GLINT;
+    
+    public static BitmapFont FONT30;
+    public static GlyphLayout LAYOUT;
 
     /**
      * @param file - The file that contains the textures.
@@ -45,6 +52,9 @@ public class Assets {
         TextureRegion[] frames = splitFrames[0];
 
         CLUE_GLINT = new Animation(0.1f, frames);
+        
+        FONT30 = createFont("arial", 30);
+        LAYOUT = new GlyphLayout();
     }
 
     /**
@@ -66,5 +76,26 @@ public class Assets {
 
         return null;
     }
+    
+	/**
+	* Creates a BitmapFont with the specified font and size.
+	*
+	* @param font The name of the font - must be stored as a .ttf file
+	* under this name in the fonts directory
+	* @param size The size of the font
+	* @return The generated font
+	* 
+	* @author JAAPAN
+	*/
+	public static BitmapFont createFont(String font, int size) {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + font + ".ttf"));
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = size;
+		BitmapFont f = generator.generateFont(parameter);
+		generator.dispose();
+	
+		return f;
+	}
+   
 
 }

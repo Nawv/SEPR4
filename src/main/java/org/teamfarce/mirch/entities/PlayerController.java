@@ -4,6 +4,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.Settings;
 import org.teamfarce.mirch.Vector2Int;
@@ -27,11 +31,8 @@ public class PlayerController extends InputAdapter {
      * Booleans storing what keys have been pressed and not released
      */
     private boolean north, south, west, east;
-
-    /**
-     * This stores the player that the controller controls
-     */
-    private Player player;
+    
+    private List<Integer> keysPressed = new ArrayList<>();
 
     /**
      * This stores the game that is running
@@ -43,8 +44,7 @@ public class PlayerController extends InputAdapter {
      *
      * @param player - The player that we want this controller to control
      */
-    public PlayerController(Player player, MIRCH game, OrthographicCamera camera) {
-        this.player = player;
+    public PlayerController(MIRCH game, OrthographicCamera camera) {
         this.camera = camera;
         this.game = game;
     }
@@ -57,8 +57,9 @@ public class PlayerController extends InputAdapter {
      */
     @Override
     public boolean keyDown(int keycode) {
+    	keysPressed.add(keycode);
+    	
         if (keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE) {
-            //player.interact();
             return true;
         }
 
@@ -94,6 +95,7 @@ public class PlayerController extends InputAdapter {
      */
     @Override
     public boolean keyUp(int keycode) {
+    	keysPressed.remove(new Integer(keycode));
 
         if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
             this.west = false;
@@ -122,7 +124,7 @@ public class PlayerController extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // ignore if its not left mouse button or first touch pointer
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
-        player.interact(screenPosToTile(screenX, screenY));
+        game.player.interact(screenPosToTile(screenX, screenY));
         return true;
     }
 
@@ -164,13 +166,22 @@ public class PlayerController extends InputAdapter {
 
         timer += delta;
 
-        if (timer > movementTime && !((MapScreen) game.guiController.mapScreen).isTransitioning() && player.toMoveTo.isEmpty()) {
-            player.move(goTo);
+        if (timer > movementTime && !((MapScreen) game.guiController.mapScreen).isTransitioning() && 
+        		game.player.toMoveTo.isEmpty()) {
+        	game.player.move(goTo);
             return;
         }
 
-        if (player.getState() != AbstractPerson.PersonState.WALKING) {
-            player.direction = goTo;
+        if (game.player.getState() != AbstractPerson.PersonState.WALKING) {
+        	game.player.direction = goTo;
         }
+    }
+    
+    public boolean anyKeyPressed() {
+    	return !keysPressed.isEmpty();
+    }
+    
+    public void clearKeysPressed() {
+    	keysPressed.clear();
     }
 }
