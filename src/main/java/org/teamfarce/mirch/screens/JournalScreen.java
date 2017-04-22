@@ -44,7 +44,6 @@ public class JournalScreen extends AbstractScreen {
     final static float PAGE_CONTENT_WIDTH = PAGE_WIDTH - (2 * PAGE_MARGIN);
     public Stage journalStage;
     private MIRCH game;
-    private GameSnapshot gameSnapshot;
     private Skin uiSkin;
     private StatusBar statusBar;
     private Table notepadPage;
@@ -63,7 +62,6 @@ public class JournalScreen extends AbstractScreen {
     public JournalScreen(MIRCH game, Skin uiSkin) {
         super(game);
         this.game = game;
-        this.gameSnapshot = game.gameSnapshot;
         this.uiSkin = uiSkin;
 
         statusBar = new StatusBar(game, uiSkin);
@@ -394,7 +392,7 @@ public class JournalScreen extends AbstractScreen {
         button.setPosition(PAGE_WIDTH - PAGE_MARGIN - NAV_BUTTON_WIDTH, PAGE_HEIGHT - PAGE_CONTENT_SPACE - (1.5f * position * NAV_BUTTON_HEIGHT));
         button.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                gameSnapshot.setState(linkState);
+                game.gameSnapshot.setState(linkState);
             }
         });
         return button;

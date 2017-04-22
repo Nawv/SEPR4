@@ -34,7 +34,7 @@ public class MapScreen extends AbstractScreen {
 	/**
 	 * Amount of time each turn lasts, in seconds
 	 */
-	public final float PLAY_TIME = 30.0f;
+	public final float PLAY_TIME = 30000.0f;
 
     /**
      * This stores the most recent frame as an image
