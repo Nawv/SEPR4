@@ -19,6 +19,7 @@ import org.teamfarce.mirch.Assets;
 import org.teamfarce.mirch.GameSnapshot;
 import org.teamfarce.mirch.GameState;
 import org.teamfarce.mirch.MIRCH;
+import org.teamfarce.mirch.Settings;
 
 /**
  * The Main Menu screen draws the Main Menu GUI to the screen and handles any inputs
@@ -76,23 +77,40 @@ public class MainMenuScreen extends AbstractScreen {
         text.setFontScale(2, 2);
         text.setBounds(Gdx.graphics.getWidth() / 2 - text.getWidth() + 30, Gdx.graphics.getHeight() / 2 + Gdx.graphics.getHeight() / 3 + Gdx.graphics.getHeight() / 16, text.getWidth(), text.getHeight());
 
-        TextButton newGameButton = new TextButton("New Game", uiSkin);
+        TextButton singlePlayerButton = new TextButton("Single Player", uiSkin);
 
         //Creating the buttons and setting their positions
-        newGameButton.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2), (Gdx.graphics.getHeight() / 2) + CENTER_MARGIN);
-        newGameButton.getLabel().setFontScale(3 / 2, 3 / 2);
-        newGameButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        singlePlayerButton.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2),
+        		(Gdx.graphics.getHeight() / 2) + CENTER_MARGIN + BUTTON_HEIGHT);
+        singlePlayerButton.getLabel().setFontScale(3 / 2, 3 / 2);
+        singlePlayerButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        TextButton twoPlayerButton = new TextButton("Two Player", uiSkin);
+        twoPlayerButton.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2),
+        		(Gdx.graphics.getHeight() / 2));
+        twoPlayerButton.getLabel().setFontScale(3 / 2, 3 / 2);
+        twoPlayerButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 
         TextButton quit = new TextButton("Quit", uiSkin);
         quit.getLabel().setFontScale(3 / 2, 3 / 2);
         quit.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        quit.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2), (Gdx.graphics.getHeight() / 2) - BUTTON_HEIGHT - CENTER_MARGIN);
+        quit.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2),
+        		(Gdx.graphics.getHeight() / 2)- BUTTON_HEIGHT - CENTER_MARGIN);
 
-        //Making the "New Game" button clickable and causing it to start the game
-        newGameButton.addListener(new ClickListener() {
+        //Making the "Single Player" button clickable and causing it to start the game
+        singlePlayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gameSnapshot.setState(GameState.narrator);
+            }
+        });
+        
+        //Making the "Two Player" button clickable and causing it to start the game
+        twoPlayerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameSnapshot.setState(GameState.narrator);
+                Settings.TWO_PLAYER = true;
             }
         });
 
@@ -107,7 +125,8 @@ public class MainMenuScreen extends AbstractScreen {
         //Loading the buttons onto the stage
         stage.addActor(background);
         stage.addActor(text);
-        stage.addActor(newGameButton);
+        stage.addActor(singlePlayerButton);
+        stage.addActor(twoPlayerButton);
         stage.addActor(quit);
     }
 
