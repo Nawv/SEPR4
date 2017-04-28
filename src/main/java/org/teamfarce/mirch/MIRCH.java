@@ -1,6 +1,8 @@
 package org.teamfarce.mirch;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import org.teamfarce.mirch.ScenarioBuilder.ScenarioBuilderException;
 import org.teamfarce.mirch.dialogue.Dialogue;
 import org.teamfarce.mirch.entities.Player;

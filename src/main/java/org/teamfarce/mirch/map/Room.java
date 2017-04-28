@@ -343,8 +343,14 @@ public class Room {
      */
     public String getMatRotation(int x, int y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("Doors");
+        TiledMapTileLayer sLayer = (TiledMapTileLayer) map.getLayers().get("Secret Door");
 
-        if (layer.getCell(x, y) == null) return null;
+        if (layer.getCell(x, y) == null) {
+        	if (sLayer.getCell(x, y) != null) {
+        		return (String) sLayer.getCell(x, y).getTile().getProperties().get("dir");
+        	}
+        	return null;
+        }
 
         return (String) layer.getCell(x, y).getTile().getProperties().get("dir");
     }

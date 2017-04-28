@@ -64,12 +64,11 @@ public class Map {
                 .addTransition(new Room.Transition().setFrom(2, 8).setTo(computerRoom, 2, 2, Direction.EAST))      //To Computer Room
 
                 .addTransition(new Room.Transition().setFrom(3, 5).setTo(outside, 19, 4, Direction.SOUTH)) //To Outside
-                // todo: uncomment this once the secret room transition is sorted
-                //.addTransition(new Room.Transition().setFrom(4, 5).setTo(outside, 20, 4, Direction.SOUTH)) //To Outside
+                .addTransition(new Room.Transition().setFrom(4, 5).setTo(outside, 20, 4, Direction.SOUTH)) //To Outside
 
         // Secret room transition (Main to secret room)
         // by Alex - Team JAAPAN
-                .addTransition(new Room.Transition().setFrom(4, 5).setTo(secret, 3, 3, Direction.SOUTH))
+                .addTransition(new Room.Transition().setFrom(19, 4).setTo(secret, 3, 3, Direction.SOUTH))
 
                 .addTransition(new Room.Transition().setFrom(11, 1).setTo(rch037, 2, 5, Direction.SOUTH))  //To RCH/037
                 .addTransition(new Room.Transition().setFrom(12, 1).setTo(rch037, 3, 5, Direction.SOUTH));  //To RCH/037
