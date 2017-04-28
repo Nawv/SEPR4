@@ -111,7 +111,7 @@ public class Map {
         secret.addTransition(new Room.Transition().setFrom(1, 1).setTo(mainRoom, 15, 8, Direction.WEST));
 
 
-        //secret room not in this list, so NPCs and clues won't be added
+        //secret room not in this list, so NPCs and clues won't be added (and it wont be the murder room)
         List<Room> rooms = Arrays.asList(mainRoom, rch037, portersOffice, kitchen, islandOfInteraction, toilet, computerRoom, lakeHouse, outside, pod);
 
         /**
