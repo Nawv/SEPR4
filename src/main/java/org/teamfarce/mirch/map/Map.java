@@ -67,7 +67,7 @@ public class Map {
                 // todo: uncomment this once the secret room transition is sorted
                 //.addTransition(new Room.Transition().setFrom(4, 5).setTo(outside, 20, 4, Direction.SOUTH)) //To Outside
 
-        // Secret room transition
+        // Secret room transition (Main to secret room)
         // by Alex - Team JAAPAN
                 .addTransition(new Room.Transition().setFrom(4, 5).setTo(secret, 3, 3, Direction.SOUTH))
 
@@ -106,7 +106,12 @@ public class Map {
         pod.addTransition(new Room.Transition().setFrom(18, 9).setTo(outside, 9, 11, Direction.EAST))    //To Outside
                 .addTransition(new Room.Transition().setFrom(18, 10).setTo(outside, 9, 12, Direction.EAST));  //To Outside
 
+        // Secret room exit transition
+        // by Alex - Team JAAPAN
+        secret.addTransition(new Room.Transition().setFrom(1, 1).setTo(mainRoom, 15, 8, Direction.WEST));
 
+
+        //secret room not in this list, so NPCs and clues won't be added
         List<Room> rooms = Arrays.asList(mainRoom, rch037, portersOffice, kitchen, islandOfInteraction, toilet, computerRoom, lakeHouse, outside, pod);
 
         /**
