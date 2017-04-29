@@ -19,7 +19,7 @@ public class Map {
 
     List<Room> rooms = new ArrayList<Room>();
 
-    public boolean secretMatEnabled = false;
+    public static boolean secretMatEnabled = false;
 
     public Map(MIRCH game) {
         this.game = game;

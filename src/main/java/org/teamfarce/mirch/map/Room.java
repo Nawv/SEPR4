@@ -325,6 +325,10 @@ public class Room {
                 continue;
             }
 
+            if (tl.getName().equals("Secret Door") && !Map.secretMatEnabled) {
+                return false;
+            }
+
             if (tl.getCell(x, y).getTile().getProperties().get("trigger").toString().equals("true")) {
                 return true;
             }
