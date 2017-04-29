@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import org.teamfarce.mirch.Assets;
 import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.OrthogonalTiledMapRendererWithPeople;
+import org.teamfarce.mirch.Settings;
 import org.teamfarce.mirch.entities.AbstractPerson;
 import org.teamfarce.mirch.entities.PlayerController;
 import org.teamfarce.mirch.entities.Suspect;
@@ -130,8 +131,10 @@ public class MapScreen extends AbstractScreen {
     	if (!gameTransition)
     		game.gameSnapshot.updateScore(delta);
         
+    	// Update the player's timer
         playTime += delta;
-        if (playTime > PLAY_TIME) {
+        // If a two player game, check whether the time is up
+        if (playTime > PLAY_TIME && Settings.TWO_PLAYER) {
             gameTransition = true;
             playTime = PLAY_TIME;
         }
