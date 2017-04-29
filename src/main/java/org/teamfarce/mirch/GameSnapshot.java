@@ -28,6 +28,16 @@ public class GameSnapshot {
     MIRCH game;
     List<Clue> clues;
     List<Room> rooms;
+    
+    /**
+     * Array for puzzle
+     */
+    public int[][] puzzle = {
+    	{ 0,  1,  2,  3},
+    	{ 4,  5,  6,  7},
+    	{ 8,  9, 10, 11},
+    	{12, 13, 14, -1}
+    };
 
     int score = 0;
     int time;

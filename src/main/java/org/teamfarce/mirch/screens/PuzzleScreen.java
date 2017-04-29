@@ -1,6 +1,7 @@
 package org.teamfarce.mirch.screens;
 
 import org.teamfarce.mirch.Assets;
+import org.teamfarce.mirch.GameState;
 import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.screens.elements.StatusBar;
 
@@ -28,12 +29,7 @@ public class PuzzleScreen extends AbstractScreen {
 	private Skin uiSkin;
 	private StatusBar statusBar;
 	
-	private int[][] puzzle = {
-		{ 0,  1,  2,  3},
-		{ 4,  5,  6,  7},
-		{ 8,  9, 10, 11},
-		{12, 13, 14, -1}
-	};
+	private int[][] puzzle;
 
 	public PuzzleScreen(MIRCH game, Skin uiSkin) {
 		super(game);
@@ -45,15 +41,19 @@ public class PuzzleScreen extends AbstractScreen {
 	private void initStage() {
 		puzzleStage = new Stage();
 		
+		puzzle = game.gameSnapshot.puzzle;
+		
 		Texture duck = Assets.loadTexture("puzzle.png");
 		
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (i == 3 && j == 3) break;
 				
-				int number = i*4+j;
+				int number = puzzle[i][j];
+				int tileX = number % 4;
+				int tileY = number / 4;
 				
-				Image img = new Image(new TextureRegion(duck, j*125, i*125, 125, 125));
+				Image img = new Image(new TextureRegion(duck, tileX*125, tileY*125, 125, 125));
 				
 				ImageButtonStyle style = new ImageButtonStyle();
 				style.up = img.getDrawable();
@@ -70,6 +70,12 @@ public class PuzzleScreen extends AbstractScreen {
 		            @Override
 		            public void clicked(InputEvent event, float x, float y) {
 		            	move(number, imgBtn);
+		            	
+		            	if (hasWon()) {
+		            		game.gameSnapshot.setState(GameState.map);
+		            		// TODO: unlock secret room etc.
+		            		// Maybe add a short delay before changing states.
+		            	}
 		            }
 				});
 			}
@@ -148,13 +154,18 @@ public class PuzzleScreen extends AbstractScreen {
 			puzzle[gapY][gapX] = puzzle[tileY][tileX];
 			puzzle[tileY][tileX] = -1;
 		}
-
+	}
+	
+	private boolean hasWon() {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				System.out.print(puzzle[i][j] + " ");
+				if (puzzle[i][j] != i*4+j && i*4+j < 15) {
+					return false;
+				}
 			}
-			System.out.println("");
 		}
+		
+		return true;
 	}
 
 }
