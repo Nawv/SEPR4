@@ -325,7 +325,7 @@ public class Room {
                 continue;
             }
 
-            if (tl.getName().equals("Secret Door") && !Map.secretMatEnabled) {
+            if (tl.getName().equals("Secret Door") && !MIRCH.me.gameSnapshot.secretMatEnabled) {
                 return false;
             }
 
