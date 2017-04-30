@@ -561,6 +561,7 @@ public class Room {
     public void enableSecretRoom() {
         map.getLayers().get("Secret Door").setOpacity(1.0f);
         // Also need to actually enable the map, not present in this branch
+    }
       
     public void secretRoom() {
         Suspect murderer = MIRCH.me.gameSnapshot.murderer;
