@@ -51,7 +51,7 @@ public class GameSnapshot {
      * Boolean to store whether the secret room floor mat is enabled
      * Added by Alex - Team JAAPAN
      */
-    public boolean secretMatEnabled = true;
+    public boolean secretMatEnabled = false;
 
     /**
      * Initialises function.

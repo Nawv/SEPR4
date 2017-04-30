@@ -187,6 +187,13 @@ public class Room {
             TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
             batch.draw(currentFrame, c.getTileX() * Settings.TILE_SIZE, c.getTileY() * Settings.TILE_SIZE);
         }
+
+        // Animation for the secret puzzle
+        // Added by Alex - Team Jaapan
+        if (this.getName().equals("Main Foyer") && !MIRCH.me.gameSnapshot.secretMatEnabled) {
+            TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
+            batch.draw(currentFrame, 26 * Settings.TILE_SIZE, 16 * Settings.TILE_SIZE);
+        }
     }
 
     /**
@@ -560,7 +567,7 @@ public class Room {
 
     public void enableSecretRoom() {
         map.getLayers().get("Secret Door").setOpacity(1.0f);
-        // Also need to actually enable the map, not present in this branch
+        MIRCH.me.gameSnapshot.secretMatEnabled = true;
     }
       
     public void secretRoom() {

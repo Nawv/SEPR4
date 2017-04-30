@@ -215,9 +215,6 @@ public class MapScreen extends AbstractScreen {
         roomTransition = false;
         gameTransition = false;
         fadeToBlack = true;
-        if (game.player.getRoom().getName().equals("Secret Room")) {
-            System.out.println("In secret room!");
-        }
     }
 
     /**
