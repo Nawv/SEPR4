@@ -587,9 +587,9 @@ public class Room {
 
         Collections.shuffle(suspectClues);
 
-        System.out.println(suspectClues.get(0));
-        System.out.println(suspectClues.get(1));
-        System.out.println(suspectClues.get(2));
+        for (int i = 0; i <= 2; i++) {
+            System.out.println(suspectClues.get(i));
+        }
 
 
     }
