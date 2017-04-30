@@ -171,7 +171,7 @@ public class PuzzleScreen extends AbstractScreen {
 				}
 			}
 		}
-		
+		MIRCH.me.rooms.get(0).enableSecretRoom();
 		return true;
 	}
 

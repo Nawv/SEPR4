@@ -553,6 +553,11 @@ public class Room {
             return newRoom;
         }
     }
+
+    public void enableSecretRoom() {
+        map.getLayers().get("Secret Door").setOpacity(1.0f);
+        // Also need to actually enable the map, not present in this branch
+    }
 }
 
 
