@@ -53,6 +53,8 @@ public class GUIController {
      * Used to draw the screen for finding a clue
      */
     public FindClueScreen findClueScreen;
+    
+    public PuzzleScreen puzzleScreen;
 
     /**
      * Constructor for GUIController, initialises required variables
@@ -76,6 +78,7 @@ public class GUIController {
         narratorScreen = new NarratorScreen(game, uiSkin);
         findClueScreen = new FindClueScreen(game, uiSkin);
         menuScreen = new MainMenuScreen(game, uiSkin);
+        puzzleScreen = new PuzzleScreen(game, uiSkin);
     }
 
 
@@ -136,6 +139,9 @@ public class GUIController {
                 case findClue:
                     this.game.setScreen(findClueScreen);
                     break;
+                case puzzle:
+                	this.game.setScreen(puzzleScreen);
+                	break;
                 default:
                     break;
             }

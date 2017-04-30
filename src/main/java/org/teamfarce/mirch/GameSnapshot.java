@@ -28,6 +28,16 @@ public class GameSnapshot {
     MIRCH game;
     List<Clue> clues;
     List<Room> rooms;
+    
+    /**
+     * Array for puzzle
+     */
+    public int[][] puzzle = {
+    	{ 0,  1,  2,  3},
+    	{ 4,  5,  6,  7},
+    	{ 8,  9, 10, 11},
+    	{12, 13, 14, -1}
+    };
 
     int score = 0;
     int time;
@@ -58,6 +68,64 @@ public class GameSnapshot {
         this.gameWon = false;
         this.score = 150;
         this.currentPersonality = 0;
+        
+        scramblePuzzle();
+    }
+    
+    /**
+     * Scrambles the puzzle, by making 500 random moves
+     * 
+     * @author JAAPAN
+     */
+    private void scramblePuzzle() {
+    	// Initial index of the gap
+    	int gapX = 3, gapY = 3;
+    	Random random = new Random();
+    	
+    	for (int i = 0; i < 500; i++) {
+    		// Choose whether to move horizontally (0) or vertically (1)
+    		if (random.nextInt(2) == 0) {
+    			// Choose whether to move right (0) or left (1)
+    			if (random.nextInt(2) == 0) {
+    				// If we can't move this way, redo this move
+    				if (gapX == 3) {
+    					i--;
+    					continue;
+    				}
+    				// Move the tile (strictly speaking, we're actually moving the gap)
+    				swapGap(gapX, gapY, gapX+1, gapY);
+    				gapX++;
+    			} else {
+    				if (gapX == 0) {
+    					i--;
+    					continue;
+    				}
+    				swapGap(gapX, gapY, gapX-1, gapY);
+    				gapX--;
+    			}
+    		} else {
+    			if (random.nextInt(2) == 0) {
+    				if (gapY == 3) {
+    					i--;
+    					continue;
+    				}
+    				swapGap(gapX, gapY, gapX, gapY+1);
+    				gapY++;
+    			} else {
+    				if (gapY == 0) {
+    					i--;
+    					continue;
+    				}
+    				swapGap(gapX, gapY, gapX, gapY-1);
+    				gapY--;
+    			}
+    		}
+    	}
+    }
+    
+    private void swapGap(int gapX, int gapY, int x, int y) {
+    	puzzle[gapY][gapX] = puzzle[y][x];
+    	puzzle[y][x] = -1;
     }
 
 
