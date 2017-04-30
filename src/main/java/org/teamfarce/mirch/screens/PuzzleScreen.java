@@ -43,11 +43,18 @@ public class PuzzleScreen extends AbstractScreen {
 		
 		puzzle = game.gameSnapshot.puzzle;
 		
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				System.out.print(puzzle[i][j] + " ");
+			}
+			System.out.println("");
+		}
+		
 		Texture duck = Assets.loadTexture("puzzle.png");
 		
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				if (i == 3 && j == 3) break;
+				if (puzzle[i][j] == -1) continue;
 				
 				int number = puzzle[i][j];
 				int tileX = number % 4;
