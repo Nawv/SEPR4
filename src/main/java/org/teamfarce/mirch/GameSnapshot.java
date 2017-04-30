@@ -48,6 +48,12 @@ public class GameSnapshot {
     private Suspect interviewSuspect = null;
 
     /**
+     * Boolean to store whether the secret room floor mat is enabled
+     * Added by Alex - Team JAAPAN
+     */
+    public boolean secretMatEnabled = true;
+
+    /**
      * Initialises function.
      */
     GameSnapshot(MIRCH game, Map map, List<Room> rooms, List<Suspect> suspects, List<Clue> clues) {

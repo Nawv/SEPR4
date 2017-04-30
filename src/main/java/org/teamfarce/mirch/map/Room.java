@@ -325,6 +325,10 @@ public class Room {
                 continue;
             }
 
+            if (tl.getName().equals("Secret Door") && !MIRCH.me.gameSnapshot.secretMatEnabled) {
+                return false;
+            }
+
             if (tl.getCell(x, y).getTile().getProperties().get("trigger").toString().equals("true")) {
                 return true;
             }
@@ -557,6 +561,40 @@ public class Room {
     public void enableSecretRoom() {
         map.getLayers().get("Secret Door").setOpacity(1.0f);
         // Also need to actually enable the map, not present in this branch
+      
+    public void secretRoom() {
+        Suspect murderer = MIRCH.me.gameSnapshot.murderer;
+        String murdererName = murderer.getName();
+        String murdererRoom = murderer.getRoom().getName();
+
+        List<Suspect> suspects = MIRCH.me.gameSnapshot.getSuspects();
+
+        if (suspects.contains(murderer)) {
+            suspects.remove(murderer);
+        }
+
+        String falseSuspect1 = suspects.get(1).getName();
+        String falseSuspect2 = suspects.get(2).getName();
+
+        String falseSuspect1Room = suspects.get(1).getRoom().getName();
+        String falseSuspect2Room = suspects.get(2).getRoom().getName();
+
+        List<String> suspectClues = new ArrayList<>();
+
+        String suspectA = falseSuspect1 + " (" + falseSuspect1Room + ")";
+        String suspectB = falseSuspect2 + " (" + falseSuspect2Room + ")";
+        String suspectC = murdererName + " (" + murdererRoom + ")";
+
+        suspectClues.add(suspectA);
+        suspectClues.add(suspectB);
+        suspectClues.add(suspectC);
+
+        Collections.shuffle(suspectClues);
+
+        for (int i = 0; i <= 2; i++) {
+            System.out.println(suspectClues.get(i));
+        }
+
     }
 }
 
