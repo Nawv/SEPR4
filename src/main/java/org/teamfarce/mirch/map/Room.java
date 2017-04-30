@@ -557,6 +557,42 @@ public class Room {
             return newRoom;
         }
     }
+
+    public void secretRoom() {
+        Suspect murderer = MIRCH.me.gameSnapshot.murderer;
+        String murdererName = murderer.getName();
+        String murdererRoom = murderer.getRoom().getName();
+
+        List<Suspect> suspects = MIRCH.me.gameSnapshot.getSuspects();
+
+        if (suspects.contains(murderer)) {
+            suspects.remove(murderer);
+        }
+
+        String falseSuspect1 = suspects.get(1).getName();
+        String falseSuspect2 = suspects.get(2).getName();
+
+        String falseSuspect1Room = suspects.get(1).getRoom().getName();
+        String falseSuspect2Room = suspects.get(2).getRoom().getName();
+
+        List<String> suspectClues = new ArrayList<>();
+
+        String suspectA = falseSuspect1 + " (" + falseSuspect1Room + ")";
+        String suspectB = falseSuspect2 + " (" + falseSuspect2Room + ")";
+        String suspectC = murdererName + " (" + murdererRoom + ")";
+
+        suspectClues.add(suspectA);
+        suspectClues.add(suspectB);
+        suspectClues.add(suspectC);
+
+        Collections.shuffle(suspectClues);
+
+        System.out.println(suspectClues.get(0));
+        System.out.println(suspectClues.get(1));
+        System.out.println(suspectClues.get(2));
+
+
+    }
 }
 
 

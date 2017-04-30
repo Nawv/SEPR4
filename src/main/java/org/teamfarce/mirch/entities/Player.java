@@ -249,8 +249,12 @@ public class Player extends AbstractPerson {
                 setDirection(Direction.valueOf(getRoom().getMatRotation(getTileX(), getTileY())));
                 roomChange = true;
             }
+        }
 
-
+        if (this.getRoom().getName().equals("Secret Room") && this.getY() == 256.0
+                && (this.getX() == 96.0 || this.getX() == 128.0 || this.getX() == 160.0)) {
+            System.out.println("On secret room trigger pads");
+            this.getRoom().secretRoom();
         }
 
         if (trackToNext != null) {
