@@ -255,7 +255,7 @@ public class Player extends AbstractPerson {
         if (this.getRoom().getName().equals("Secret Room") && this.getY() == 8 * Settings.TILE_SIZE
                 && (this.getX() == 3 * Settings.TILE_SIZE || this.getX() == 4 * Settings.TILE_SIZE ||
                 this.getX() == 5 * Settings.TILE_SIZE)) {
-            this.getRoom().secretRoom();
+            MIRCH.me.gameSnapshot.setState(GameState.cctv);
         }
 
         if (this.getRoom().getName().equals("Main Foyer") && this.getY() == 15 * Settings.TILE_SIZE

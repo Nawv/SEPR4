@@ -24,8 +24,6 @@ import org.teamfarce.mirch.screens.elements.StatusBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.teamfarce.mirch.map.Room.getCCTVSuspects;
-
 public class CCTVScreen extends AbstractScreen {
 
 	private static final int CCTV_WIDTH = 500;
@@ -48,7 +46,6 @@ public class CCTVScreen extends AbstractScreen {
 	private void initStage() {
 		CCTVStage = new Stage();
 
-
 		BitmapFont font = new BitmapFont();
 		Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.GREEN);
 		Label intro = new Label("Sentient CCTV Pro 7.8 System accessed\nUsername: n00bKiller\nPassword: ********\n" +
@@ -57,7 +54,7 @@ public class CCTVScreen extends AbstractScreen {
 				"perpetrators. I would suggest focusing your efforts on them.\nGood luck.", textStyle);
 
 
-		List<String> cctvStrings = Room.getCCTVSuspects();
+		List<String> cctvStrings = MIRCH.me.gameSnapshot.getCCTVSuspects();
 		List<Label> cctvClues = new ArrayList<>();
 		cctvClues.add(new Label(cctvStrings.get(0), textStyle));
 		cctvClues.add(new Label(cctvStrings.get(1), textStyle));

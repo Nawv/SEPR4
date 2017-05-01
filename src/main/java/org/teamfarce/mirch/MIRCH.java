@@ -105,6 +105,11 @@ public class MIRCH extends Game {
         game1Snapshot.map.placeNPCsInRooms(game1Characters);
         game2Snapshot.map.placeNPCsInRooms(game2Characters);
 
+        // Prepare the list of suspects to be shown on the CCTV screen
+        // Added by Alex - Team Jaapan
+        game1Snapshot.prepCCTVSuspects();
+        game2Snapshot.prepCCTVSuspects();
+
         //initialise the player sprite
         Dialogue playerDialogue = null;
         try {
@@ -126,7 +131,6 @@ public class MIRCH extends Game {
         characters = game1Characters;
         player = player1;
 
-        //game1Snapshot.setState(GameState.cctv);
         game2Snapshot.setState(GameState.map);
 
         //Setup screens

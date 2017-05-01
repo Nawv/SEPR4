@@ -6,6 +6,8 @@ import org.teamfarce.mirch.entities.Suspect;
 import org.teamfarce.mirch.map.Map;
 import org.teamfarce.mirch.map.Room;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -54,6 +56,12 @@ public class GameSnapshot {
     public boolean secretMatEnabled = false;
 
     /**
+     * Stores the 3 suspects & locations to be used on CCTV screen
+     * Added by Alex - Team JAAPAN
+     */
+    private List<String> CCTVSuspectClues = new ArrayList<>();
+
+    /**
      * Initialises function.
      */
     GameSnapshot(MIRCH game, Map map, List<Room> rooms, List<Suspect> suspects, List<Clue> clues) {
@@ -68,7 +76,7 @@ public class GameSnapshot {
         this.gameWon = false;
         this.score = 150;
         this.currentPersonality = 0;
-        
+
         scramblePuzzle();
     }
     
@@ -315,5 +323,47 @@ public class GameSnapshot {
         for (Suspect s : getSuspects()) {
             s.setLocked(false);
         }
+    }
+
+    public void prepCCTVSuspects() {
+        System.out.println(CCTVSuspectClues.size());
+        if (CCTVSuspectClues.size() == 3) {
+            return;
+        }
+        Suspect murderer = this.murderer;
+        String murdererName = murderer.getName();
+        String murdererRoom = murderer.getRoom().getName();
+
+        List<Suspect> suspects = this.getSuspects();
+
+        if (suspects.contains(murderer)) {
+            suspects.remove(murderer);
+        }
+
+        String falseSuspect1 = suspects.get(1).getName();
+        String falseSuspect2 = suspects.get(2).getName();
+
+        String falseSuspect1Room = suspects.get(1).getRoom().getName();
+        String falseSuspect2Room = suspects.get(2).getRoom().getName();
+
+
+        String suspectA = falseSuspect1 + " (" + falseSuspect1Room + ")";
+        String suspectB = falseSuspect2 + " (" + falseSuspect2Room + ")";
+        String suspectC = murdererName + " (" + murdererRoom + ")";
+
+        CCTVSuspectClues.add(suspectA);
+        CCTVSuspectClues.add(suspectB);
+        CCTVSuspectClues.add(suspectC);
+
+        Collections.shuffle(CCTVSuspectClues);
+        System.out.println(CCTVSuspectClues.size());
+        for (int i = 0; i <= 2; i++) {
+            System.out.println(CCTVSuspectClues.get(i));
+        }
+
+    }
+
+    public List<String> getCCTVSuspects() {
+        return CCTVSuspectClues;
     }
 }
