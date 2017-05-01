@@ -126,7 +126,7 @@ public class MIRCH extends Game {
         characters = game1Characters;
         player = player1;
 
-        game1Snapshot.setState(GameState.cctv);
+        //game1Snapshot.setState(GameState.cctv);
         game2Snapshot.setState(GameState.map);
 
         //Setup screens

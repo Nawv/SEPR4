@@ -62,6 +62,14 @@ public class Room {
     private float animationStateTime = 0f;
 
     /**
+     * Stores the 3 suspects & locations to be used on CCTV screen
+     * Added by Alex - Team JAAPAN
+     */
+    private static List<String> CCTVSuspectClues = new ArrayList<>();
+
+
+
+    /**
      * Constructor that builds a Room object from the given parameters
      *
      * @param id      - The integer ID of the room
@@ -584,7 +592,6 @@ public class Room {
         String falseSuspect1Room = suspects.get(1).getRoom().getName();
         String falseSuspect2Room = suspects.get(2).getRoom().getName();
 
-        List<String> CCTVSuspectClues = new ArrayList<>();
 
         String suspectA = falseSuspect1 + " (" + falseSuspect1Room + ")";
         String suspectB = falseSuspect2 + " (" + falseSuspect2Room + ")";
@@ -603,6 +610,11 @@ public class Room {
         MIRCH.me.gameSnapshot.setState(GameState.cctv);
 
     }
+
+    public static List<String> getCCTVSuspects() {
+        return CCTVSuspectClues;
+    }
+
 }
 
 

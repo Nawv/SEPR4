@@ -21,6 +21,11 @@ import org.teamfarce.mirch.MIRCH;
 import org.teamfarce.mirch.map.Room;
 import org.teamfarce.mirch.screens.elements.StatusBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.teamfarce.mirch.map.Room.getCCTVSuspects;
+
 public class CCTVScreen extends AbstractScreen {
 
 	private static final int CCTV_WIDTH = 500;
@@ -45,15 +50,29 @@ public class CCTVScreen extends AbstractScreen {
 
 
 		BitmapFont font = new BitmapFont();
-		Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.BLACK);
-		Label text = new Label("CCTV!", textStyle);
+		Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.GREEN);
+		Label intro = new Label("Sentient CCTV Pro 7.8 System accessed\nUsername: n00bKiller\nPassword: ********\n" +
+				"Using the AI knowledge of ARIN and vision knowledge of VIGR, I have analysed your work, as\n" +
+				"well as the available CCTV footage and have deduced that these are the three most likely\n" +
+				"perpetrators. I would suggest focusing your efforts on them.\nGood luck.", textStyle);
 
 
+		List<String> cctvStrings = Room.getCCTVSuspects();
+		List<Label> cctvClues = new ArrayList<>();
+		cctvClues.add(new Label(cctvStrings.get(0), textStyle));
+		cctvClues.add(new Label(cctvStrings.get(1), textStyle));
+		cctvClues.add(new Label(cctvStrings.get(2), textStyle));
 
-		text.setBounds(Gdx.graphics.getWidth() / 2 - text.getWidth() + 30, Gdx.graphics.getHeight() / 2 +
-				Gdx.graphics.getHeight() / 3 + Gdx.graphics.getHeight() / 16, text.getWidth(), text.getHeight());
+		intro.setPosition(100.0f, 490.0f);
 
-		CCTVStage.addActor(text);
+		CCTVStage.addActor(intro);
+
+		int i = 0;
+		for (Label label : cctvClues) {
+			label.setPosition(100.0f, 400 - (30 * i));
+			CCTVStage.addActor(label);
+			i++;
+		}
 
 	}
 
@@ -69,7 +88,7 @@ public class CCTVScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-        Gdx.gl.glClearColor(135, 206, 235, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		CCTVStage.act();
