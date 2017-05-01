@@ -6,10 +6,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import org.teamfarce.mirch.Assets;
-import org.teamfarce.mirch.MIRCH;
-import org.teamfarce.mirch.Settings;
-import org.teamfarce.mirch.Vector2Int;
+import org.teamfarce.mirch.*;
 import org.teamfarce.mirch.entities.Clue;
 import org.teamfarce.mirch.entities.Direction;
 import org.teamfarce.mirch.entities.Suspect;
@@ -587,21 +584,23 @@ public class Room {
         String falseSuspect1Room = suspects.get(1).getRoom().getName();
         String falseSuspect2Room = suspects.get(2).getRoom().getName();
 
-        List<String> suspectClues = new ArrayList<>();
+        List<String> CCTVSuspectClues = new ArrayList<>();
 
         String suspectA = falseSuspect1 + " (" + falseSuspect1Room + ")";
         String suspectB = falseSuspect2 + " (" + falseSuspect2Room + ")";
         String suspectC = murdererName + " (" + murdererRoom + ")";
 
-        suspectClues.add(suspectA);
-        suspectClues.add(suspectB);
-        suspectClues.add(suspectC);
+        CCTVSuspectClues.add(suspectA);
+        CCTVSuspectClues.add(suspectB);
+        CCTVSuspectClues.add(suspectC);
 
-        Collections.shuffle(suspectClues);
+        Collections.shuffle(CCTVSuspectClues);
 
         for (int i = 0; i <= 2; i++) {
-            System.out.println(suspectClues.get(i));
+            System.out.println(CCTVSuspectClues.get(i));
         }
+
+        MIRCH.me.gameSnapshot.setState(GameState.cctv);
 
     }
 }

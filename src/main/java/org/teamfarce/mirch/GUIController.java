@@ -53,8 +53,19 @@ public class GUIController {
      * Used to draw the screen for finding a clue
      */
     public FindClueScreen findClueScreen;
-    
+
+
+    /**
+     * Added by Nick - Team JAAPAN
+     */
     public PuzzleScreen puzzleScreen;
+
+    /**
+     * Used to display the CCTV screen
+     * Added by Alex - Team JAAPAN
+     */
+    public CCTVScreen cctvScreen;
+
 
     /**
      * Constructor for GUIController, initialises required variables
@@ -79,6 +90,7 @@ public class GUIController {
         findClueScreen = new FindClueScreen(game, uiSkin);
         menuScreen = new MainMenuScreen(game, uiSkin);
         puzzleScreen = new PuzzleScreen(game, uiSkin);
+        cctvScreen = new CCTVScreen(game, uiSkin);
     }
 
 
@@ -142,6 +154,9 @@ public class GUIController {
                 case puzzle:
                 	this.game.setScreen(puzzleScreen);
                 	break;
+                case cctv:
+                    this.game.setScreen(cctvScreen);
+                    break;
                 default:
                     break;
             }
