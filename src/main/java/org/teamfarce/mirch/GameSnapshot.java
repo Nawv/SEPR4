@@ -330,25 +330,27 @@ public class GameSnapshot {
         if (CCTVSuspectClues.size() == 3) {
             return;
         }
-        Suspect murderer = this.murderer;
         String murdererName = murderer.getName();
         String murdererRoom = murderer.getRoom().getName();
 
-        List<Suspect> suspects = this.getSuspects();
+        int count = 0;
+        Suspect falseSuspect1;
+        Suspect falseSuspect2;
+        do {
+        	falseSuspect1 = suspects.get(count);
+        	count++;
+        } while (falseSuspect1 == murderer);
+        do {
+        	falseSuspect2 = suspects.get(count);
+        	count++;
+        } while (falseSuspect2 == murderer);
 
-        if (suspects.contains(murderer)) {
-            suspects.remove(murderer);
-        }
-
-        String falseSuspect1 = suspects.get(1).getName();
-        String falseSuspect2 = suspects.get(2).getName();
-
-        String falseSuspect1Room = suspects.get(1).getRoom().getName();
-        String falseSuspect2Room = suspects.get(2).getRoom().getName();
+        String falseSuspect1Room = falseSuspect1.getRoom().getName();
+        String falseSuspect2Room = falseSuspect2.getRoom().getName();
 
 
-        String suspectA = falseSuspect1 + " (" + falseSuspect1Room + ")";
-        String suspectB = falseSuspect2 + " (" + falseSuspect2Room + ")";
+        String suspectA = falseSuspect1.getName() + " (" + falseSuspect1Room + ")";
+        String suspectB = falseSuspect2.getName() + " (" + falseSuspect2Room + ")";
         String suspectC = murdererName + " (" + murdererRoom + ")";
 
         CCTVSuspectClues.add(suspectA);

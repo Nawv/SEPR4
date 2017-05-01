@@ -109,6 +109,8 @@ public class MIRCH extends Game {
         // Added by Alex - Team Jaapan
         game1Snapshot.prepCCTVSuspects();
         game2Snapshot.prepCCTVSuspects();
+        
+        System.out.println("Murderer: " + gameSnapshot.murderer.getName());
 
         //initialise the player sprite
         Dialogue playerDialogue = null;
