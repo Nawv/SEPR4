@@ -79,8 +79,9 @@ public class PuzzleScreen extends AbstractScreen {
 		            	move(number, imgBtn);
 		            	
 		            	if (hasWon()) {
+							MIRCH.me.rooms.get(0).enableSecretRoom();
 		            		game.gameSnapshot.setState(GameState.map);
-		            		// TODO: unlock secret room etc.
+
 		            		// Maybe add a short delay before changing states.
 		            	}
 		            }
@@ -171,7 +172,6 @@ public class PuzzleScreen extends AbstractScreen {
 				}
 			}
 		}
-		MIRCH.me.rooms.get(0).enableSecretRoom();
 		return true;
 	}
 
