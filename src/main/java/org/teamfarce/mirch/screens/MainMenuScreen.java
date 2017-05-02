@@ -68,17 +68,14 @@ public class MainMenuScreen extends AbstractScreen {
         Image background = new Image(new TextureRegion(Assets.loadTexture("menuBackground.jpg")));
 
         //Creating the labelstyle used for the text in the label.
-        BitmapFont font = new BitmapFont();
-        LabelStyle textStyle = new LabelStyle(font, Color.WHITE);
+        LabelStyle textStyle = new LabelStyle(Assets.FONT30, Color.WHITE);
 
         //Creating the label containing text and determining  its size and location on screen
         Label title = new Label("Murder in the Ron Cooke Hub", textStyle);
-        title.setFontScale(2, 2);
-        title.setBounds(Gdx.graphics.getWidth() / 2 - title.getWidth(), 43*Gdx.graphics.getHeight() / 48, title.getWidth(), title.getHeight());
+        title.setBounds(Gdx.graphics.getWidth() / 2 - title.getWidth()/2, 43*Gdx.graphics.getHeight() / 48, title.getWidth(), title.getHeight());
 
         Label subtitle = new Label("by Team JAAPAN", textStyle);
-        subtitle.setFontScale(1.5f, 1.5f);
-        subtitle.setBounds(Gdx.graphics.getWidth() / 2 - subtitle.getWidth() + 20, 5*Gdx.graphics.getHeight() / 6, subtitle.getWidth(), subtitle.getHeight());
+        subtitle.setBounds(Gdx.graphics.getWidth() / 2 - subtitle.getWidth()/2, 5*Gdx.graphics.getHeight() / 6, subtitle.getWidth(), subtitle.getHeight());
 
         TextButton singlePlayerButton = new TextButton("Single Player", uiSkin);
 
