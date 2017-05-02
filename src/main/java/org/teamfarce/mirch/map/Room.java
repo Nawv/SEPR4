@@ -189,7 +189,7 @@ public class Room {
         // Added by Alex - Team Jaapan
         if (this.getName().equals("Main Foyer") && !MIRCH.me.gameSnapshot.secretMatEnabled) {
             TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
-            batch.draw(currentFrame, 26 * Settings.TILE_SIZE, 16 * Settings.TILE_SIZE);
+            batch.draw(currentFrame, 26 * Settings.TILE_SIZE, 15 * Settings.TILE_SIZE);
         }
     }
 
