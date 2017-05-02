@@ -1,5 +1,8 @@
 package org.teamfarce.mirch.screens;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.teamfarce.mirch.Assets;
 import org.teamfarce.mirch.GameState;
 import org.teamfarce.mirch.MIRCH;
@@ -40,7 +43,16 @@ public class PuzzleScreen extends AbstractScreen {
 	
 	private void initStage() {
 		puzzleStage = new Stage();
-		
+
+		BitmapFont font = new BitmapFont();
+		Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.WHITE);
+		Label instructions = new Label("Complete this puzzle to gain access to the " +
+				"TOP SECRET surveillance room. You'll still have to find the entrance yourself!", textStyle);
+		instructions.setX(310);
+		instructions.setY(650);
+
+		puzzleStage.addActor(instructions);
+
 		puzzle = game.gameSnapshot.puzzle;
 		
 		for (int i = 0; i < 4; i++) {
@@ -102,7 +114,7 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-        Gdx.gl.glClearColor(135, 206, 235, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         puzzleStage.act();
