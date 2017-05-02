@@ -191,6 +191,13 @@ public class Room {
             TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
             batch.draw(currentFrame, 26 * Settings.TILE_SIZE, 15 * Settings.TILE_SIZE);
         }
+
+        // Animation for CCTV Desk
+        // Added by Alex - Team Jaapan
+        if (this.getName().equals("Secret Room")) {
+            TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
+            batch.draw(currentFrame, 4 * Settings.TILE_SIZE, 8 * Settings.TILE_SIZE);
+        }
     }
 
     /**
