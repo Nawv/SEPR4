@@ -6,6 +6,8 @@ import org.teamfarce.mirch.entities.Suspect;
 import org.teamfarce.mirch.map.Map;
 import org.teamfarce.mirch.map.Room;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +30,16 @@ public class GameSnapshot {
     MIRCH game;
     List<Clue> clues;
     List<Room> rooms;
+    
+    /**
+     * Array for puzzle
+     */
+    public int[][] puzzle = {
+    	{ 0,  1,  2,  3},
+    	{ 4,  5,  6,  7},
+    	{ 8,  9, 10, 11},
+    	{12, 13, 14, -1}
+    };
 
     int score = 0;
     int time;
@@ -36,6 +48,18 @@ public class GameSnapshot {
     private GameState state;
     private float counter = 0f;
     private Suspect interviewSuspect = null;
+
+    /**
+     * Boolean to store whether the secret room floor mat is enabled
+     * Added by Alex - Team JAAPAN
+     */
+    public boolean secretMatEnabled = false;
+
+    /**
+     * Stores the 3 suspects & locations to be used on CCTV screen
+     * Added by Alex - Team JAAPAN
+     */
+    private List<String> CCTVSuspectClues = new ArrayList<>();
 
     /**
      * Initialises function.
@@ -52,6 +76,64 @@ public class GameSnapshot {
         this.gameWon = false;
         this.score = 150;
         this.currentPersonality = 0;
+
+        scramblePuzzle();
+    }
+    
+    /**
+     * Scrambles the puzzle, by making 500 random moves
+     * 
+     * @author JAAPAN
+     */
+    private void scramblePuzzle() {
+    	// Initial index of the gap
+    	int gapX = 3, gapY = 3;
+    	Random random = new Random();
+    	
+    	for (int i = 0; i < 500; i++) {
+    		// Choose whether to move horizontally (0) or vertically (1)
+    		if (random.nextInt(2) == 0) {
+    			// Choose whether to move right (0) or left (1)
+    			if (random.nextInt(2) == 0) {
+    				// If we can't move this way, redo this move
+    				if (gapX == 3) {
+    					i--;
+    					continue;
+    				}
+    				// Move the tile (strictly speaking, we're actually moving the gap)
+    				swapGap(gapX, gapY, gapX+1, gapY);
+    				gapX++;
+    			} else {
+    				if (gapX == 0) {
+    					i--;
+    					continue;
+    				}
+    				swapGap(gapX, gapY, gapX-1, gapY);
+    				gapX--;
+    			}
+    		} else {
+    			if (random.nextInt(2) == 0) {
+    				if (gapY == 3) {
+    					i--;
+    					continue;
+    				}
+    				swapGap(gapX, gapY, gapX, gapY+1);
+    				gapY++;
+    			} else {
+    				if (gapY == 0) {
+    					i--;
+    					continue;
+    				}
+    				swapGap(gapX, gapY, gapX, gapY-1);
+    				gapY--;
+    			}
+    		}
+    	}
+    }
+    
+    private void swapGap(int gapX, int gapY, int x, int y) {
+    	puzzle[gapY][gapX] = puzzle[y][x];
+    	puzzle[y][x] = -1;
     }
 
 
@@ -241,5 +323,49 @@ public class GameSnapshot {
         for (Suspect s : getSuspects()) {
             s.setLocked(false);
         }
+    }
+
+    public void prepCCTVSuspects() {
+        System.out.println(CCTVSuspectClues.size());
+        if (CCTVSuspectClues.size() == 3) {
+            return;
+        }
+        String murdererName = murderer.getName();
+        String murdererRoom = murderer.getRoom().getName();
+
+        int count = 0;
+        Suspect falseSuspect1;
+        Suspect falseSuspect2;
+        do {
+        	falseSuspect1 = suspects.get(count);
+        	count++;
+        } while (falseSuspect1 == murderer);
+        do {
+        	falseSuspect2 = suspects.get(count);
+        	count++;
+        } while (falseSuspect2 == murderer);
+
+        String falseSuspect1Room = falseSuspect1.getRoom().getName();
+        String falseSuspect2Room = falseSuspect2.getRoom().getName();
+
+
+        String suspectA = falseSuspect1.getName() + " (" + falseSuspect1Room + ")";
+        String suspectB = falseSuspect2.getName() + " (" + falseSuspect2Room + ")";
+        String suspectC = murdererName + " (" + murdererRoom + ")";
+
+        CCTVSuspectClues.add(suspectA);
+        CCTVSuspectClues.add(suspectB);
+        CCTVSuspectClues.add(suspectC);
+
+        Collections.shuffle(CCTVSuspectClues);
+        System.out.println(CCTVSuspectClues.size());
+        for (int i = 0; i <= 2; i++) {
+            System.out.println(CCTVSuspectClues.get(i));
+        }
+
+    }
+
+    public List<String> getCCTVSuspects() {
+        return CCTVSuspectClues;
     }
 }

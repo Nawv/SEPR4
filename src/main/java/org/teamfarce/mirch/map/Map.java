@@ -48,6 +48,10 @@ public class Map {
 
         Room pod = new Room(9, "pod.tmx", "Pod");
 
+        // Secret room
+        // Alex @ Team JAAPAN
+        Room secret = new Room(10, "secret.tmx", "Secret Room");
+
 
         mainRoom.addTransition(new Room.Transition().setFrom(17, 17).setTo(portersOffice, 1, 5, Direction.EAST))    //To Porters Office
 
@@ -61,6 +65,10 @@ public class Map {
 
                 .addTransition(new Room.Transition().setFrom(3, 5).setTo(outside, 19, 4, Direction.SOUTH)) //To Outside
                 .addTransition(new Room.Transition().setFrom(4, 5).setTo(outside, 20, 4, Direction.SOUTH)) //To Outside
+
+        // Secret room transition (Main to secret room)
+        // by Alex - Team JAAPAN
+                .addTransition(new Room.Transition().setFrom(19, 4).setTo(secret, 3, 3, Direction.SOUTH))
 
                 .addTransition(new Room.Transition().setFrom(11, 1).setTo(rch037, 2, 5, Direction.SOUTH))  //To RCH/037
                 .addTransition(new Room.Transition().setFrom(12, 1).setTo(rch037, 3, 5, Direction.SOUTH));  //To RCH/037
@@ -97,6 +105,12 @@ public class Map {
         pod.addTransition(new Room.Transition().setFrom(18, 9).setTo(outside, 9, 11, Direction.EAST))    //To Outside
                 .addTransition(new Room.Transition().setFrom(18, 10).setTo(outside, 9, 12, Direction.EAST));  //To Outside
 
+        // Secret room exit transition
+        // by Alex - Team JAAPAN
+        secret.addTransition(new Room.Transition().setFrom(1, 1).setTo(mainRoom, 15, 8, Direction.WEST));
+
+
+        //secret room not in this list, so NPCs and clues won't be added (and it wont be the murder room)
         List<Room> rooms = Arrays.asList(mainRoom, rch037, portersOffice, kitchen, islandOfInteraction, toilet, computerRoom, lakeHouse, outside, pod);
 
         /**

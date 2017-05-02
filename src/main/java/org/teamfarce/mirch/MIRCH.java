@@ -1,6 +1,8 @@
 package org.teamfarce.mirch;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import org.teamfarce.mirch.ScenarioBuilder.ScenarioBuilderException;
 import org.teamfarce.mirch.dialogue.Dialogue;
 import org.teamfarce.mirch.entities.Player;
@@ -97,8 +99,18 @@ public class MIRCH extends Game {
         	game2Characters.add(suspect);
         }
 
+        // Initialize gameSnapshot pointer
+        gameSnapshot = game1Snapshot;
+
         game1Snapshot.map.placeNPCsInRooms(game1Characters);
         game2Snapshot.map.placeNPCsInRooms(game2Characters);
+
+        // Prepare the list of suspects to be shown on the CCTV screen
+        // Added by Alex - Team Jaapan
+        game1Snapshot.prepCCTVSuspects();
+        game2Snapshot.prepCCTVSuspects();
+        
+        System.out.println("Murderer: " + gameSnapshot.murderer.getName());
 
         //initialise the player sprite
         Dialogue playerDialogue = null;
@@ -115,13 +127,12 @@ public class MIRCH extends Game {
         player2 = new Player(this, "Bob", "The player to beat all players", "Detective_sprite.png", playerDialogue);
         player2.setTileCoordinates(7, 10);
         player2.setRoom(game2Rooms.get(0));
-        
+
         // Initialize pointers
-        gameSnapshot = game1Snapshot;
         rooms = game1Rooms;
         characters = game1Characters;
         player = player1;
-        
+
         game2Snapshot.setState(GameState.map);
 
         //Setup screens

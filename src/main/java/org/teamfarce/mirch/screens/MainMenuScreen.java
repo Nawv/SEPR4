@@ -72,10 +72,13 @@ public class MainMenuScreen extends AbstractScreen {
         LabelStyle textStyle = new LabelStyle(font, Color.WHITE);
 
         //Creating the label containing text and determining  its size and location on screen
-        Label text = new Label("Welcome to the Lorem Ipsum Murder Mystery Game!", textStyle);
+        Label title = new Label("Murder in the Ron Cooke Hub", textStyle);
+        title.setFontScale(2, 2);
+        title.setBounds(Gdx.graphics.getWidth() / 2 - title.getWidth(), 43*Gdx.graphics.getHeight() / 48, title.getWidth(), title.getHeight());
 
-        text.setFontScale(2, 2);
-        text.setBounds(Gdx.graphics.getWidth() / 2 - text.getWidth() + 30, Gdx.graphics.getHeight() / 2 + Gdx.graphics.getHeight() / 3 + Gdx.graphics.getHeight() / 16, text.getWidth(), text.getHeight());
+        Label subtitle = new Label("by Team JAAPAN", textStyle);
+        subtitle.setFontScale(1.5f, 1.5f);
+        subtitle.setBounds(Gdx.graphics.getWidth() / 2 - subtitle.getWidth() + 20, 5*Gdx.graphics.getHeight() / 6, subtitle.getWidth(), subtitle.getHeight());
 
         TextButton singlePlayerButton = new TextButton("Single Player", uiSkin);
 
@@ -124,7 +127,8 @@ public class MainMenuScreen extends AbstractScreen {
 
         //Loading the buttons onto the stage
         stage.addActor(background);
-        stage.addActor(text);
+        stage.addActor(title);
+        stage.addActor(subtitle);
         stage.addActor(singlePlayerButton);
         stage.addActor(twoPlayerButton);
         stage.addActor(quit);

@@ -2,6 +2,7 @@ package org.teamfarce.mirch.entities;
 
 import org.teamfarce.mirch.GameState;
 import org.teamfarce.mirch.MIRCH;
+import org.teamfarce.mirch.Settings;
 import org.teamfarce.mirch.Vector2Int;
 import org.teamfarce.mirch.dialogue.Dialogue;
 import org.teamfarce.mirch.map.Room;
@@ -249,8 +250,16 @@ public class Player extends AbstractPerson {
                 setDirection(Direction.valueOf(getRoom().getMatRotation(getTileX(), getTileY())));
                 roomChange = true;
             }
+        }
 
+        if (this.getRoom().getName().equals("Secret Room") && this.getY() == 8 * Settings.TILE_SIZE
+                && this.getX() == 4 * Settings.TILE_SIZE) {
+            MIRCH.me.gameSnapshot.setState(GameState.cctv);
+        }
 
+        if (this.getRoom().getName().equals("Main Foyer") && this.getY() == 15 * Settings.TILE_SIZE
+                && this.getX() == 26 * Settings.TILE_SIZE && !game.gameSnapshot.secretMatEnabled) {
+            game.gameSnapshot.setState(GameState.puzzle);
         }
 
         if (trackToNext != null) {

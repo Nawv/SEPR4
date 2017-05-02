@@ -6,10 +6,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import org.teamfarce.mirch.Assets;
-import org.teamfarce.mirch.MIRCH;
-import org.teamfarce.mirch.Settings;
-import org.teamfarce.mirch.Vector2Int;
+import org.teamfarce.mirch.*;
 import org.teamfarce.mirch.entities.Clue;
 import org.teamfarce.mirch.entities.Direction;
 import org.teamfarce.mirch.entities.Suspect;
@@ -187,6 +184,20 @@ public class Room {
             TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
             batch.draw(currentFrame, c.getTileX() * Settings.TILE_SIZE, c.getTileY() * Settings.TILE_SIZE);
         }
+
+        // Animation for the secret puzzle
+        // Added by Alex - Team Jaapan
+        if (this.getName().equals("Main Foyer") && !MIRCH.me.gameSnapshot.secretMatEnabled) {
+            TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
+            batch.draw(currentFrame, 26 * Settings.TILE_SIZE, 15 * Settings.TILE_SIZE);
+        }
+
+        // Animation for CCTV Desk
+        // Added by Alex - Team Jaapan
+        if (this.getName().equals("Secret Room")) {
+            TextureRegion currentFrame = (TextureRegion) Assets.CLUE_GLINT.getKeyFrame(animationStateTime, true);
+            batch.draw(currentFrame, 4 * Settings.TILE_SIZE, 8 * Settings.TILE_SIZE);
+        }
     }
 
     /**
@@ -325,6 +336,10 @@ public class Room {
                 continue;
             }
 
+            if (tl.getName().equals("Secret Door") && !MIRCH.me.gameSnapshot.secretMatEnabled) {
+                return false;
+            }
+
             if (tl.getCell(x, y).getTile().getProperties().get("trigger").toString().equals("true")) {
                 return true;
             }
@@ -343,8 +358,14 @@ public class Room {
      */
     public String getMatRotation(int x, int y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("Doors");
+        TiledMapTileLayer sLayer = (TiledMapTileLayer) map.getLayers().get("Secret Door");
 
-        if (layer.getCell(x, y) == null) return null;
+        if (layer.getCell(x, y) == null) {
+        	if (sLayer.getCell(x, y) != null) {
+        		return (String) sLayer.getCell(x, y).getTile().getProperties().get("dir");
+        	}
+        	return null;
+        }
 
         return (String) layer.getCell(x, y).getTile().getProperties().get("dir");
     }
@@ -547,6 +568,12 @@ public class Room {
             return newRoom;
         }
     }
+
+    public void enableSecretRoom() {
+        map.getLayers().get("Secret Door").setOpacity(1.0f);
+        MIRCH.me.gameSnapshot.secretMatEnabled = true;
+    }
+
 }
 
 
