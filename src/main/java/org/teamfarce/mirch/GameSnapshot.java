@@ -77,7 +77,7 @@ public class GameSnapshot {
         this.score = 150;
         this.currentPersonality = 0;
 
-        scramblePuzzle();
+        //scramblePuzzle();
     }
     
     /**
