@@ -1,5 +1,5 @@
-# Lorem Ipsum [![CircleCI](https://circleci.com/gh/Brookke/Lorem-Ipsum.svg?style=svg&circle-token=88a08119c648799c8c1241249131701e1298e614)](https://circleci.com/gh/Brookke/Lorem-Ipsum)
-Visit out website at http://www.lihq.me, or read the documentation at http://docs3.lihq.me
+# Team JAAPAN
+Visit out website at http://jaapan.alexcummins.uk, and view our deliverables at http://jaapan.alexcummins.uk/deliverables/
 
 MIRCH - Murder In Ron Cooke is a top down 2D dynamically generated point and click RPG murder mystery game. An evening swarve has been taking place at the Ron Cooke Hub, and a guest is dead. You have been brought in to determine exactly what has occurred.
 
