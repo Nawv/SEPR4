@@ -25,7 +25,7 @@ public class RoomArrow extends Sprite {
     /**
      * This constructs the RoomArrow, calling the super() method the the sprite class it extends
      *
-     * @param player the player that the arrow is to be associated with
+     * @param game The game the arrow is associated with
      */
     public RoomArrow(MIRCH game) {
         super(Assets.getArrowDirection("NORTH"));
