@@ -53,9 +53,6 @@ To build the game use the built in run configuration *Desktop* in the same way t
 ## Testing
 This project is tested using JUnit. Tests are located within the `/game/src/tests` directory. For test documentation, please see https://github.com/junit-team/junit4/wiki
 
-### Running Tests
-For every commit CircleCI runs all the included tests, however we recomend that you run test locally too before committing.
-
 ### Adding Tests
 - Create new class for tests under `/game/src/tests` When naming the class end the name with `_Test` for consistency e.g. `Player_Test`
 - This class should extend `GameTester` this initialises the backend of the game so that test run correctly.
@@ -63,12 +60,6 @@ For every commit CircleCI runs all the included tests, however we recomend that 
 - Write a test function using assertions, and use `@Test` decorator above it
 - See this page for examples of assertions: https://github.com/junit-team/junit4/wiki/assertions
 - Run your tests locally and see if they pass!
-
-### CircleCI Test Results
-After tests have run the results are displayed in the "Test Summary" tab on CircleCI.
-
-If the tests have failed and no test summary is provided, this normally means that the code doesn't compile, or there is a problem with the test code. To gather more information, scroll down to read the console output from when the tests were run.
-
 
 # Database
 The game is mostly constructed from a database (SQLite). To open and edit the database, simply download a SQLite db editor such as [DB Browser for SQLite](http://sqlitebrowser.org)
