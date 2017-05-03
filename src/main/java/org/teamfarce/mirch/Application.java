@@ -1,3 +1,6 @@
+/** Team Jaapan
+ * Executable download at: http://jaapan.alexcummins.uk/JAAPAN-MITRCH-FINAL.zip
+ */
 package org.teamfarce.mirch;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
