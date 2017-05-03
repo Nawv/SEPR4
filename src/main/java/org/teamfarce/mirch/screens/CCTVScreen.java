@@ -24,6 +24,11 @@ import org.teamfarce.mirch.screens.elements.StatusBar;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Used to display a list of possible murderers in the secret room.
+ * 
+ * @author Team JAAPAN
+ */
 public class CCTVScreen extends AbstractScreen {
 
 	private static final int CCTV_WIDTH = 500;
