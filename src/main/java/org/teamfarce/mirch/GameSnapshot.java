@@ -33,6 +33,8 @@ public class GameSnapshot {
     
     /**
      * Array for puzzle
+     * 
+     * @author Team JAAPAN
      */
     public int[][] puzzle = {
     	{ 0,  1,  2,  3},
@@ -51,13 +53,15 @@ public class GameSnapshot {
 
     /**
      * Boolean to store whether the secret room floor mat is enabled
-     * Added by Alex - Team JAAPAN
+     * 
+     * @author Team JAAPAN
      */
     public boolean secretMatEnabled = false;
 
     /**
      * Stores the 3 suspects & locations to be used on CCTV screen
-     * Added by Alex - Team JAAPAN
+     * 
+     * @author Team JAAPAN
      */
     private List<String> CCTVSuspectClues = new ArrayList<>();
 
@@ -131,6 +135,15 @@ public class GameSnapshot {
     	}
     }
     
+    /**
+     * Swaps a given tile in the puzzle with the gap in the puzzle
+     * @param gapX x-coordinate of the gap in the puzzle
+     * @param gapY y-coordinate of the gap in the puzzle
+     * @param x x-coordinate of the tile in the puzzle
+     * @param y y-coordinate of the tile in the puzzle
+     * 
+     * @author Team JAAPAN
+     */
     private void swapGap(int gapX, int gapY, int x, int y) {
     	puzzle[gapY][gapX] = puzzle[y][x];
     	puzzle[y][x] = -1;
@@ -325,14 +338,23 @@ public class GameSnapshot {
         }
     }
 
+    /**
+     * Choose two random suspects and the murderer to be used as the secret room reward. Resulting
+     * strings are stored in CCTVSuspectClues.
+     * 
+     * @author Team JAAPAN
+     */
     public void prepCCTVSuspects() {
         System.out.println(CCTVSuspectClues.size());
+        // Only allow the list to be populated once
         if (CCTVSuspectClues.size() == 3) {
             return;
         }
+        // Get the murderer's name and location 
         String murdererName = murderer.getName();
         String murdererRoom = murderer.getRoom().getName();
 
+        // Choose two suspects who aren't the murderer
         int count = 0;
         Suspect falseSuspect1;
         Suspect falseSuspect2;
@@ -345,10 +367,11 @@ public class GameSnapshot {
         	count++;
         } while (falseSuspect2 == murderer);
 
+        // Get the false suspects locations
         String falseSuspect1Room = falseSuspect1.getRoom().getName();
         String falseSuspect2Room = falseSuspect2.getRoom().getName();
 
-
+        // Build the strings
         String suspectA = falseSuspect1.getName() + " (" + falseSuspect1Room + ")";
         String suspectB = falseSuspect2.getName() + " (" + falseSuspect2Room + ")";
         String suspectC = murdererName + " (" + murdererRoom + ")";
@@ -357,14 +380,20 @@ public class GameSnapshot {
         CCTVSuspectClues.add(suspectB);
         CCTVSuspectClues.add(suspectC);
 
+        // Shuffle the list, so the murderer isn't always first
         Collections.shuffle(CCTVSuspectClues);
+        
         System.out.println(CCTVSuspectClues.size());
         for (int i = 0; i <= 2; i++) {
             System.out.println(CCTVSuspectClues.get(i));
         }
-
     }
 
+    /**
+     * @return the list of suspects for the CCTVScreen in the secret room.
+     * 
+     * @author Team JAAPAN
+     */
     public List<String> getCCTVSuspects() {
         return CCTVSuspectClues;
     }

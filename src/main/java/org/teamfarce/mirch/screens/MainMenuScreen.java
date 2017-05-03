@@ -77,9 +77,10 @@ public class MainMenuScreen extends AbstractScreen {
         Label subtitle = new Label("by Team JAAPAN", textStyle);
         subtitle.setBounds(Gdx.graphics.getWidth() / 2 - subtitle.getWidth()/2, 5*Gdx.graphics.getHeight() / 6, subtitle.getWidth(), subtitle.getHeight());
 
+        // Creating the buttons and setting their positions
+        // Added by Team JAAPAN
         TextButton singlePlayerButton = new TextButton("Single Player", uiSkin);
 
-        //Creating the buttons and setting their positions
         singlePlayerButton.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2),
         		(Gdx.graphics.getHeight() / 2) + CENTER_MARGIN + BUTTON_HEIGHT);
         singlePlayerButton.getLabel().setFontScale(3 / 2, 3 / 2);
@@ -97,7 +98,7 @@ public class MainMenuScreen extends AbstractScreen {
         quit.setPosition((Gdx.graphics.getWidth() / 2) - (BUTTON_WIDTH / 2),
         		(Gdx.graphics.getHeight() / 2)- BUTTON_HEIGHT - CENTER_MARGIN);
 
-        //Making the "Single Player" button clickable and causing it to start the game
+        // Making the "Single Player" button clickable and causing it to start the game
         singlePlayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -105,7 +106,8 @@ public class MainMenuScreen extends AbstractScreen {
             }
         });
         
-        //Making the "Two Player" button clickable and causing it to start the game
+        // Making the "Two Player" button clickable and causing it to start the game
+        // Added by Team JAAPAN
         twoPlayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -114,7 +116,7 @@ public class MainMenuScreen extends AbstractScreen {
             }
         });
 
-        //Making the "Quit" button clickable and causing it to close the game
+        // Making the "Quit" button clickable and causing it to close the game
         quit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -26,7 +26,17 @@ public class Assets {
      */
     public static Animation CLUE_GLINT;
     
+    /**
+     * Global size 30 Arial font
+     * 
+     * @author Team JAAPAN
+     */
     public static BitmapFont FONT30;
+    /**
+     * GlyphLayout used to compute text size
+     * 
+     * @author Team JAAPAN
+     */
     public static GlyphLayout LAYOUT;
 
     /**
@@ -85,7 +95,7 @@ public class Assets {
 	* @param size The size of the font
 	* @return The generated font
 	* 
-	* @author JAAPAN
+	* @author Team JAAPAN
 	*/
 	public static BitmapFont createFont(String font, int size) {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + font + ".ttf"));

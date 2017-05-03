@@ -10,6 +10,8 @@ public class Settings {
     public static final int TILE_SIZE = 32;
     /**
      * Stores whether the game is in single player or two player mode
+	 * 
+	 * @author Team JAAPAN
      */
     public static boolean TWO_PLAYER = false;
 

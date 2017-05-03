@@ -24,36 +24,71 @@ import java.util.Random;
 public class MIRCH extends Game {
     public static MIRCH me;
     
-    // Each game state
-    public GameSnapshot game1Snapshot;
-    public GameSnapshot game2Snapshot;
-    // Pointer to current game state
+    /**
+     * The game snapshots
+     * 
+     * @author Team JAAPAN
+     */
+    public GameSnapshot game1Snapshot, game2Snapshot;
+    /**
+     * Pointer to the current game
+     * 
+     * @author Team JAAPAN
+     */
     public GameSnapshot gameSnapshot;
     
     public GUIController guiController;
     
-    // Each game's rooms
-    public ArrayList<Room> game1Rooms;
-    public ArrayList<Room> game2Rooms;
-    // Pointer to current game's rooms
+    /**
+     * The game's rooms
+     * 
+     * @author Team JAAPAN
+     */
+    public ArrayList<Room> game1Rooms, game2Rooms;
+    /**
+     * Pointer to current game's rooms
+     * 
+     * @author Team JAAPAN
+     */
     public ArrayList<Room> rooms;
 
-    // Each game's characters
-    public ArrayList<Suspect> game1Characters;
-    public ArrayList<Suspect> game2Characters;
-    // Pointer to current game's characters
+    /**
+     * The game's characters
+     * 
+     * @author Team JAAPAN
+     */
+    public ArrayList<Suspect> game1Characters, game2Characters;
+    /**
+     * Pointer to current game's characters
+     * 
+     * @author Team JAAPAN
+     */
     public ArrayList<Suspect> characters;
 
     public int step; //stores the current loop number
 
+    /**
+     * Each player
+     */
     public Player player1, player2;
-    // Pointer to current player
+    /**
+     * Pointer to current player
+     * 
+     * @author Team JAAPAN
+     */
     public Player player;
     
+    /**
+     * Stores which game is currently playing - 1 or 2
+     * 
+     * @author Team JAAPAN
+     */
     public boolean game1 = true;
 
     /**
      * Initialises all variables in the game and sets up the game for play.
+     * 
+     * @author Team JAAPAN
      */
     @Override
     public void create() {
@@ -68,6 +103,7 @@ public class MIRCH extends Game {
             database = new ScenarioBuilderDatabase("db.db");
 
             try {
+            	// Generate two separate games instances
                 game1Snapshot = ScenarioBuilder.generateGame(this, database, new Random());
                 game2Snapshot = ScenarioBuilder.generateGame(this, database, new Random());
             } catch (ScenarioBuilderException e) {
@@ -106,7 +142,6 @@ public class MIRCH extends Game {
         game2Snapshot.map.placeNPCsInRooms(game2Characters);
 
         // Prepare the list of suspects to be shown on the CCTV screen
-        // Added by Alex - Team Jaapan
         game1Snapshot.prepCCTVSuspects();
         game2Snapshot.prepCCTVSuspects();
         

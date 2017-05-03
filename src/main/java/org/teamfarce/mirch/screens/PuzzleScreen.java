@@ -21,6 +21,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Screen used to display and interact with the puzzle
+ * 
+ * @author Team JAAPAN
+ *
+ */
 public class PuzzleScreen extends AbstractScreen {
 	
 	private static final int PUZZLE_WIDTH = 500;
@@ -53,27 +59,28 @@ public class PuzzleScreen extends AbstractScreen {
 
 		puzzleStage.addActor(instructions);
 
+		// Retrieve the puzzle for the current game instance
 		puzzle = game.gameSnapshot.puzzle;
 		
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				System.out.print(puzzle[i][j] + " ");
-			}
-			System.out.println("");
-		}
-		
+		// Load the puzzle texture
 		Texture duck = Assets.loadTexture("puzzle.png");
 		
+		// Create the 15 tiles as square regions of the texture
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
+				// If this tile is the gap, continue
 				if (puzzle[i][j] == -1) continue;
 				
+				// Get the number of this tile (0 = top left in unscrambled image, counting in rows)
 				int number = puzzle[i][j];
+				// Compute the x and y coordinates of the tile in the image
 				int tileX = number % 4;
 				int tileY = number / 4;
 				
+				// Generate the region from the texture
 				Image img = new Image(new TextureRegion(duck, tileX*125, tileY*125, 125, 125));
 				
+				// Create the style, using the region
 				ImageButtonStyle style = new ImageButtonStyle();
 				style.up = img.getDrawable();
 				style.down = img.getDrawable();
@@ -81,20 +88,23 @@ public class PuzzleScreen extends AbstractScreen {
 				
 				ImageButton imgBtn = new ImageButton(style);
 				
+				// Position the tile on the screen, and add it to the stage
 				imgBtn.setX(PUZZLE_X + j*125);
 				imgBtn.setY(PUZZLE_Y + 375-i*125);
 				puzzleStage.addActor(imgBtn);
 				
+				// Event handler for when a tile is clicked
 				imgBtn.addListener(new ClickListener() {
 		            @Override
 		            public void clicked(InputEvent event, float x, float y) {
+		            	// Move the tile
 		            	move(number, imgBtn);
 		            	
+		            	// Test the win condition
 		            	if (hasWon()) {
+		            		// Enable the secret room trigger tile and return to the map
 							MIRCH.me.rooms.get(0).enableSecretRoom();
 		            		game.gameSnapshot.setState(GameState.map);
-
-		            		// Maybe add a short delay before changing states.
 		            	}
 		            }
 				});
@@ -143,8 +153,17 @@ public class PuzzleScreen extends AbstractScreen {
 		statusBar.dispose();
 	}
 	
+	/**
+	 * Move a given tile, if possible
+	 * 
+	 * @param tile The number of the tile in the unscrambled image
+	 * @param btn The tile itself
+	 * 
+	 * @author Team JAAPAN
+	 */
 	private void move(int tile, ImageButton btn) {
 		int tileX = 0, tileY = 0, gapX = 0, gapY = 0;
+		// Find the tile and gap in the puzzle 
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (puzzle[j][i] == tile) {
@@ -157,6 +176,7 @@ public class PuzzleScreen extends AbstractScreen {
 			}
 		}
 		
+		// If the tile can be moved, move it
 		if (tileX == gapX - 1 && tileY == gapY) {
 			btn.setX(btn.getX() + PUZZLE_WIDTH/4);
 			puzzle[gapY][gapX] = puzzle[tileY][tileX];
@@ -176,6 +196,11 @@ public class PuzzleScreen extends AbstractScreen {
 		}
 	}
 	
+	/**
+	 * @return true if the puzzle is complete, false otherwise
+	 * 
+	 * @author Team JAAPAN
+	 */
 	private boolean hasWon() {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
