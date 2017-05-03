@@ -68,7 +68,7 @@ public class Map {
 
         // Secret room transition (Main to secret room)
         // by Alex - Team JAAPAN
-                .addTransition(new Room.Transition().setFrom(19, 4).setTo(secret, 3, 3, Direction.SOUTH))
+                .addTransition(new Room.Transition().setFrom(19, 4).setTo(secret, 1, 1, Direction.EAST))
 
                 .addTransition(new Room.Transition().setFrom(11, 1).setTo(rch037, 2, 5, Direction.SOUTH))  //To RCH/037
                 .addTransition(new Room.Transition().setFrom(12, 1).setTo(rch037, 3, 5, Direction.SOUTH));  //To RCH/037
@@ -107,7 +107,7 @@ public class Map {
 
         // Secret room exit transition
         // by Alex - Team JAAPAN
-        secret.addTransition(new Room.Transition().setFrom(1, 1).setTo(mainRoom, 15, 8, Direction.WEST));
+        secret.addTransition(new Room.Transition().setFrom(1, 1).setTo(mainRoom, 19, 4, Direction.NORTH));
 
 
         //secret room not in this list, so NPCs and clues won't be added (and it wont be the murder room)
